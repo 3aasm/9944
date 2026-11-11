@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>اختبار علم النفس السيبراني - جامعة الشرقية</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -40,6 +40,11 @@
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             color: #1e293b;
             min-height: 100vh;
+            touch-action: pan-x pan-y;
+        }
+        /* منع تقريب وتكبير الشاشة التلقائي على الموبايل عند التركيز في الحقول النصية */
+        input, textarea, select {
+            font-size: 16px !important;
         }
         .glass-card {
             background: rgba(255, 255, 255, 0.96);
@@ -317,16 +322,16 @@
         </div>
 
         <!-- Custom Import Quiz Modal (Paste JSON / Custom Exam) -->
-        <div id="importModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-            <div class="bg-white rounded-3xl p-6 md:p-8 max-w-2xl w-full shadow-2xl border border-slate-100 space-y-4">
+        <div id="importModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
+            <div class="bg-white rounded-3xl p-5 md:p-7 max-w-2xl w-full shadow-2xl border border-slate-100 space-y-4 my-auto">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-xl">
                             <i class="fa-solid fa-file-import"></i>
                         </div>
                         <div>
-                            <h3 class="text-lg font-bold text-slate-900">لصق وتحويل اختبار جديد</h3>
-                            <p class="text-xs text-slate-500">الصق نص الـ JSON الذي تم توليده من الذكاء الاصطناعي</p>
+                            <h3 class="text-lg font-bold text-slate-900">إدخال واستيراد اختبار جديد</h3>
+                            <p class="text-xs text-slate-500">حدد طريقة التقييم أولاً، ثم الصق كود الاختبار</p>
                         </div>
                     </div>
                     <button onclick="closeImportModal()" class="text-slate-400 hover:text-slate-600 p-2 text-lg">
@@ -334,9 +339,41 @@
                     </button>
                 </div>
 
+                <!-- 1. Selection Options First -->
+                <div class="p-3.5 bg-gradient-to-r from-teal-50/80 via-emerald-50/50 to-slate-50 rounded-2xl border border-teal-100">
+                    <span class="text-xs font-black text-teal-900 flex items-center gap-1.5 mb-2.5">
+                        <span class="w-5 h-5 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px]">1</span>
+                        <span>اختر نمط وطريقة عرض الإجابات للاختبار الجديد:</span>
+                    </span>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                        <label class="flex items-center gap-3 p-2.5 rounded-xl border border-slate-200 bg-white cursor-pointer hover:border-teal-400 transition shadow-sm">
+                            <input type="radio" name="importFeedbackMode" value="instant" class="w-4 h-4 text-teal-600 focus:ring-teal-500 cursor-pointer">
+                            <div>
+                                <span class="font-bold text-slate-900 flex items-center gap-1">
+                                    <i class="fa-solid fa-bolt text-amber-500"></i> إجابات وتصحيح مباشر
+                                </span>
+                                <span class="text-[11px] text-slate-500 block mt-0.5">تقييم فوري عند الاختيار + زر كشف المقالي</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center gap-3 p-2.5 rounded-xl border border-slate-200 bg-white cursor-pointer hover:border-teal-400 transition shadow-sm">
+                            <input type="radio" name="importFeedbackMode" value="delayed" checked class="w-4 h-4 text-teal-600 focus:ring-teal-500 cursor-pointer">
+                            <div>
+                                <span class="font-bold text-slate-900 flex items-center gap-1">
+                                    <i class="fa-solid fa-flag-checkered text-teal-600"></i> التصحيح في النهاية (المعتاد)
+                                </span>
+                                <span class="text-[11px] text-slate-500 block mt-0.5">ظهور الدرجة والنماذج بعد الضغط على تسليم</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 2. Code Area & Actions -->
                 <div class="space-y-2">
                     <div class="flex items-center justify-between">
-                        <label for="rawQuizInput" class="text-xs font-bold text-slate-700 block">نص الاختبار (JSON أو كود التوليد):</label>
+                        <label for="rawQuizInput" class="text-xs font-black text-slate-700 flex items-center gap-1.5">
+                            <span class="w-5 h-5 rounded-full bg-slate-700 text-white flex items-center justify-center text-[10px]">2</span>
+                            <span>نص الاختبار (JSON):</span>
+                        </label>
                         <div class="flex items-center gap-1.5">
                             <!-- Undo Button -->
                             <button type="button" id="undoBtn" onclick="undoTextClear()" disabled class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-400 border border-slate-200 transition flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed hover:enabled:bg-slate-200 hover:enabled:text-slate-700" title="تراجع عن الحذف">
@@ -350,42 +387,43 @@
                             </button>
                         </div>
                     </div>
-                    <textarea id="rawQuizInput" rows="10" placeholder="الصق كود الاختبار هنا مباشرة..." class="w-full p-3 font-mono text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-slate-50"></textarea>
-                    <div class="flex items-center justify-between text-[11px] text-slate-500">
-                        <span>يدعم استخراج الـ JSON تلقائياً حتى لو كان محاطاً بنصوص أو تعليقات.</span>
-                        <button type="button" onclick="loadSampleTemplate()" class="text-teal-600 hover:underline font-bold">تحميل نموذج تجريبي</button>
-                    </div>
-
-                    <!-- Mode Select inside Import Modal -->
-                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 mt-2">
-                        <span class="text-xs font-bold text-slate-700 block mb-2">اختر طريقة تقييم وعرض الإجابات لهذا الاختبار:</span>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                            <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 bg-white cursor-pointer hover:bg-slate-50">
-                                <input type="radio" name="importFeedbackMode" value="instant" class="text-teal-600 focus:ring-teal-500">
-                                <div>
-                                    <span class="font-bold text-slate-800 block">إجابات وتصحيح مباشر</span>
-                                    <span class="text-[11px] text-slate-500">تصحيح فوري عند النقر + زر كشف الإجابة للمقالي</span>
-                                </div>
-                            </label>
-                            <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 bg-white cursor-pointer hover:bg-slate-50">
-                                <input type="radio" name="importFeedbackMode" value="delayed" checked class="text-teal-600 focus:ring-teal-500">
-                                <div>
-                                    <span class="font-bold text-slate-800 block">التصحيح في النهاية (الحالي)</span>
-                                    <span class="text-[11px] text-slate-500">إظهار كافة النتائج والنماذج بعد الضغط على تسليم</span>
-                                </div>
-                            </label>
+                    <textarea id="rawQuizInput" rows="7" placeholder="الصق كود الاختبار هنا يدوياً أو اضغط على 'لصق وتحويل فوري' بالأسفل..." class="w-full p-3 font-mono text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-slate-50" style="touch-action: pan-x pan-y;"></textarea>
+                    
+                    <!-- Quick Prompt Copy Bar & Sample Load -->
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-2 p-2.5 bg-purple-50/80 rounded-xl border border-purple-200 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-lg bg-purple-200 text-purple-800 flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-robot"></i></span>
+                            <span class="text-purple-900 font-semibold">هل تحتاج كود جديد؟ انسخ أمر الذكاء الاصطناعي:</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button type="button" id="copyInlinePromptBtn" onclick="copyPromptDirectly()" class="px-3 py-1.5 rounded-lg bg-purple-700 hover:bg-purple-800 text-white font-bold transition flex items-center gap-1.5 shadow-sm text-xs">
+                                <i class="fa-regular fa-copy"></i>
+                                <span id="copyInlinePromptText">نسخ أمر الذكاء الاصطناعي</span>
+                            </button>
+                            <button type="button" onclick="loadSampleTemplate()" class="text-slate-600 hover:text-teal-700 hover:underline font-bold text-[11px]">نموذج تجريبي</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
-                    <button onclick="closeImportModal()" class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition">
+                <!-- Footer Buttons: Primary Paste & Convert + Cancel -->
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-2.5 pt-3 border-t border-slate-100">
+                    <button onclick="closeImportModal()" class="w-full sm:w-auto px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition order-2 sm:order-1">
                         إلغاء
                     </button>
-                    <button onclick="applyImportedQuiz()" class="px-6 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm transition shadow-md flex items-center gap-2">
-                        <i class="fa-solid fa-bolt"></i>
-                        <span>تحويل وعرض الاختبار الآن</span>
-                    </button>
+                    
+                    <div class="flex items-center gap-2 w-full sm:w-auto justify-end order-1 sm:order-2">
+                        <!-- Standard Apply Button (If pasted manually) -->
+                        <button type="button" onclick="applyImportedQuiz()" class="w-1/2 sm:w-auto px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs transition flex items-center justify-center gap-1.5 shadow">
+                            <i class="fa-solid fa-check"></i>
+                            <span>تطبيق الكود المكتوب</span>
+                        </button>
+                        
+                        <!-- Primary Paste & Convert Button -->
+                        <button type="button" onclick="pasteAndConvertInstantly()" class="w-1/2 sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-extrabold text-xs transition shadow-md flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-paste text-amber-300"></i>
+                            <span>لصق وتحويل فوري</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1174,51 +1212,106 @@
             }, 2500);
         }
 
-        function loadSampleTemplate() {
-            const sampleJson = {
-                name: "نموذج تجريبي منسوخ (ب)",
-                mcq: [
-                    { id: "mcq_1", q: "١. يركز علم النفس السيبراني على دراسة:", options: { A: "السلوك البشري في البيئات الرقمية", B: "صناعة رقاقات المعالجة", C: "تصميم دوائر الكهرباء", D: "علم الفلك والمجرات" }, ans: "A", exp: "يهتم بدراسة التفاعل الإنساني مع المنصات الرقمية." },
-                    { id: "mcq_2", q: "٢. الأنا الأعلى في نظرية فرويد يمثل:", options: { A: "الضمير والمعايير الأخلاقية", B: "الغرائز الحيوانية", C: "الجزء العضلي", D: "اللاوعي المادي" }, ans: "A", exp: "يمثل الضمير والمثل الأخلاقية العليا." },
-                    { id: "mcq_3", q: "٣. الانطواء والانبساط من أبعاد نظرية:", options: { A: "أيزنك ويونغ", B: "واطسون وحده", C: "سكنر", D: "روجرز" }, ans: "A", exp: "صنف يونغ وأيزنك الشخصية وفق بعدي الانبساط والانطواء." },
-                    { id: "mcq_4", q: "٤. الشخصية التفاعلية الرقمية تتسم بـ:", options: { A: "بناء شبكات اجتماعية نشطة", B: "العزلة التامة", C: "استخدام أسماء وهمية دائماً", D: "رفض المحادثات" }, ans: "A", exp: "نشطة للغاية في الردود والمحادثات." },
-                    { id: "mcq_5", q: "٥. تظهر أعراض الإدمان الرقمي في:", options: { A: "اضطراب النوم وصعوبة إدارة الوقت", B: "زيادة التركيز والقراءة", C: "تقليل استخدام الهاتف", D: "الاستقرار التام" }, ans: "A", exp: "من أهم أعراضه تدهور جودة النوم وإدارة الوقت." },
-                    { id: "mcq_6", q: "٦. الباعث يتميز عن الدافع بكونه:", options: { A: "آنياً ولحظياً وقصير المدى", B: "حالة نقص دائم", C: "وراثياً خالصاً", D: "طويل الأمد" }, ans: "A", exp: "الباعث مثير آني ومباشر." },
-                    { id: "mcq_7", q: "٧. مؤسس نظرية الذات والقبول غير المشروط هو:", options: { A: "كارل روجرز", B: "سيغموند فرويد", C: "باندورا", D: "واطسون" }, ans: "A", exp: "كارل روجرز في الاتجاه الإنساني." },
-                    { id: "mcq_8", q: "٨. من مظاهر التعصب الرقمي:", options: { A: "استخدام لغة عدائية ونشر الشائعات", B: "احترام الرأي المخالف", C: "الحيادية والموضوعية", D: "مساعدة الآخرين" }, ans: "A", exp: "التعصب يتضمن الإقصاء والعدائية." },
-                    { id: "mcq_9", q: "٩. الحاجة بحسب تعريفها تمثل:", options: { A: "حالة من النقص أو الحرمان", B: "مثير لحظي", C: "سلوك ظاهري فوري", D: "رد فعل شرطي" }, ans: "A", exp: "الحاجة هي حالة النقص أو الحرمان." },
-                    { id: "mcq_10", q: "١٠. الكفاءة الذاتية من مفاهيم نظرية:", options: { A: "ألبرت باندورا", B: "فرويد", C: "سكنر", D: "ألبورت" }, ans: "A", exp: "باندورا في نظريته المعرفية الاجتماعية." }
-                ],
-                tf: [
-                    { id: "tf_1", q: "١١. نشأ علم النفس السيبراني في مطلع التسعينيات.", ans: "T", exp: "صواب: ارتبط بانتشار الإنترنت في التسعينيات." },
-                    { id: "tf_2", q: "١٢. لا توجد أي علاقة بين استخدام الواقع الافتراضي والعلاج النفسي.", ans: "F", exp: "خطأ: يستخدم في علاج الفوبيا والقلق." },
-                    { id: "tf_3", q: "١٣. الشخصية الخفية تفضل المراقبة على المشاركة المباشرة.", ans: "T", exp: "صواب: تتسم بمتابعة بصمت وخصوصية." },
-                    { id: "tf_4", q: "١٤. الهو (Id) يعمل وفق مبدأ الواقع والتأجيل.", ans: "F", exp: "خطأ: الهو يبحث عن الإشباع اللحظي." },
-                    { id: "tf_5", q: "١٥. الفقاعات الرقمية تحد من التعصب وتزيد من تقبل الرأي الآخر.", ans: "F", exp: "خطأ: تعزز التصلب الفكري والتعصب." },
-                    { id: "tf_6", q: "١٦. الدافع قوة ديناميكية تنشأ لإشباع الحاجة.", ans: "T", exp: "صواب: يوجه السلوك نحو الهدف." },
-                    { id: "tf_7", q: "١٧. الإدمان على ألعاب الفيديو يعد نوعاً من الإدمان الرقمي.", ans: "T", exp: "صواب: مصنف كأحد أنماط الإدمان التقني." },
-                    { id: "tf_8", q: "١٨. تفترض النظرية السلوكية أن الإنسان يولد محكوماً بغرائزه اللاواعية فقط.", ans: "F", exp: "خطأ: تلك نظرية التحليل النفسي." },
-                    { id: "tf_9", q: "١٩. البعد التواصلي يشمل استخدام الرموز والإيموجي.", ans: "T", exp: "صواب: البعد التواصلي يعنى بطريقة التعبير." },
-                    { id: "tf_10", q: "٢٠. القبول غير المشروط شرط للنمو النفسي السليم عند روجرز.", ans: "T", exp: "صواب: ركيزة أساسية بنظرية الذات." }
-                ],
-                essay: [
-                    { id: "essay_1", q: "٢١. قارن بين الشخصية العلنية والشخصية المزدوجة من حيث الظهور والدافع النفسي؟", marks: "3 درجات", model: ["الشخصية العلنية: حب الظهور والمشاركة وجذب الاهتمام والتقدير.", "الشخصية المزدوجة: الفصل بين الذات الحقيقية وصورة مثالية افتراضية."] },
-                    { id: "essay_2", q: "٢٢. بين بالرسم أو التوضيح الفارق العملي بين الحاجة والدافع والباعث؟", marks: "3 درجات", model: ["الحاجة: حالة نقص داخلي.", "الدافع: طاقة موجهة للتعويض.", "الباعث: منبه خارجي لحظي."] },
-                    { id: "essay_3", q: "٢٣. اقترح 3 حلول نفسية للحد من التعصب الرقمي في وسائل التواصل؟", marks: "4 درجات", model: ["1) تنمية التفكير النقدي والتحقق.", "2) كسر الفقاعات الرقمية بمتابعة وجهات نظر متعددة.", "3) التوعية بمخاطر خطاب الكراهية وضبط الانفعالات."] }
-                ]
-            };
-            document.getElementById('rawQuizInput').value = JSON.stringify(sampleJson, null, 2);
+        // Direct copy of the AI prompt from inside the import modal
+        function copyPromptDirectly() {
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = AI_PROMPT_TEMPLATE;
+            tempTextArea.style.position = 'fixed';
+            tempTextArea.style.left = '-9999px';
+            document.body.appendChild(tempTextArea);
+            tempTextArea.focus();
+            tempTextArea.select();
+            
+            try {
+                document.execCommand('copy');
+                const btnText = document.getElementById('copyInlinePromptText');
+                if (btnText) {
+                    btnText.textContent = "تم نسخ الأمر بنجاح!";
+                    setTimeout(() => {
+                        btnText.textContent = "نسخ أمر الذكاء الاصطناعي";
+                    }, 2200);
+                }
+                showNotification("تم نسخ أمر الذكاء الاصطناعي للحافظة! الصقه في ChatGPT أو Gemini لتوليد كود الاختبار.", "success");
+            } catch (err) {
+                showNotification("تعذر نسخ الأمر تلقائياً، يمكنك فتحه من زر البرومبت بالأعلى.", "error");
+            } finally {
+                document.body.removeChild(tempTextArea);
+            }
         }
 
+        // One-Click: Paste from Clipboard and Convert Immediately
+        async function pasteAndConvertInstantly() {
+            const inputArea = document.getElementById('rawQuizInput');
+            let text = "";
+
+            // 1. Try reading directly from Navigator Clipboard API
+            if (navigator.clipboard && navigator.clipboard.readText) {
+                try {
+                    text = await navigator.clipboard.readText();
+                } catch (e) {
+                    console.warn("Clipboard API permission denied or iframe blocked, falling back...", e);
+                }
+            }
+
+            // 2. If Clipboard API was blocked or returned empty, check input box value
+            if (!text || text.trim() === "") {
+                text = inputArea.value.trim();
+            }
+
+            // 3. If still empty, focus and prompt the user gracefully
+            if (!text || text.trim() === "") {
+                inputArea.focus();
+                inputArea.placeholder = "⚠️ المتصفح منع القراءة التلقائية: اضغط هنا ثم اضغط (Ctrl + V) للصق، وسيتحول الاختبار فوراً!";
+                showNotification("يرجى لصق الكود داخل المربع (Ctrl + V) وسيقوم النظام بتحويله تلقائياً فورياً.", "info");
+                
+                // Add one-time paste event listener to auto-convert as soon as user presses Ctrl+V
+                inputArea.onpaste = function() {
+                    setTimeout(() => {
+                        applyImportedQuiz();
+                        inputArea.onpaste = null;
+                    }, 100);
+                };
+                return;
+            }
+
+            // If text is successfully retrieved, put it into textarea and convert
+            inputArea.value = text;
+            applyImportedQuiz();
+        }
+
+        // Smart & Resilient JSON Extractor & Sanitizer
         function extractJsonFromString(str) {
-            // Clean markdown blocks if present
-            const cleaned = str.replace(/```json/gi, '').replace(/```/g, '').trim();
+            if (!str) throw new Error("النص فارغ");
+
+            // Strip Markdown code block indicators
+            let cleaned = str.replace(/```json/gi, '').replace(/```javascript/gi, '').replace(/```/g, '').trim();
+
+            // Locate first opening brace '{' and matching outermost closing brace '}'
             const firstBrace = cleaned.indexOf('{');
             const lastBrace = cleaned.lastIndexOf('}');
-            if (firstBrace !== -1 && lastBrace !== -1) {
-                return JSON.parse(cleaned.substring(firstBrace, lastBrace + 1));
+
+            if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+                cleaned = cleaned.substring(firstBrace, lastBrace + 1);
             }
-            return JSON.parse(cleaned);
+
+            // Remove trailing commas before closing braces/brackets (common AI JSON issue)
+            cleaned = cleaned.replace(/,\s*([\]}])/g, '$1');
+
+            // Try standard parse
+            try {
+                return JSON.parse(cleaned);
+            } catch (initialErr) {
+                // Second attempt: replace curly quotes or strange formatting
+                try {
+                    const sanitized = cleaned
+                        .replace(/[\u201C\u201D]/g, '"') // smart double quotes
+                        .replace(/[\u2018\u2019]/g, "'") // smart single quotes
+                        .replace(/\r\n/g, '\n');
+                    return JSON.parse(sanitized);
+                } catch (secondErr) {
+                    throw new Error("تنسيق كود الـ JSON غير صالح. تأكد من نسخ الكود كاملاً من القوس { إلى القوس }.");
+                }
+            }
         }
 
         function applyImportedQuiz() {
