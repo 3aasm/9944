@@ -136,28 +136,40 @@
                     </div>
                 </div>
 
-                <!-- Timer & Actions -->
-                <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
-                    <div class="flex items-center gap-2 bg-slate-100 text-slate-700 font-bold px-4 py-2 rounded-xl text-sm border border-slate-200">
+                <!-- Mode Selection Toggle & Actions -->
+                <div class="flex flex-wrap items-center gap-2.5 w-full sm:w-auto justify-end">
+                    <!-- Feedback Mode Toggle -->
+                    <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
+                        <button type="button" id="modeInstantBtn" onclick="setFeedbackMode('instant')" class="px-3 py-1.5 rounded-lg transition duration-150 flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+                            <i class="fa-solid fa-bolt text-amber-500"></i>
+                            <span>إجابات مباشرة</span>
+                        </button>
+                        <button type="button" id="modeDelayedBtn" onclick="setFeedbackMode('delayed')" class="px-3 py-1.5 rounded-lg transition duration-150 flex items-center gap-1.5 bg-teal-600 text-white shadow-sm">
+                            <i class="fa-solid fa-flag-checkered"></i>
+                            <span>تصحيح في النهاية</span>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-2 bg-slate-100 text-slate-700 font-bold px-3.5 py-1.5 rounded-xl text-sm border border-slate-200">
                         <i class="fa-regular fa-clock text-teal-600"></i>
                         <span id="timerText">35:00</span>
                     </div>
                     <!-- Fullscreen Toggle Button -->
-                    <button type="button" onclick="toggleFullScreen()" id="fullscreenBtn" class="no-print bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-sm font-semibold transition border border-slate-200 flex items-center gap-1.5" title="ملء الشاشة">
+                    <button type="button" onclick="toggleFullScreen()" id="fullscreenBtn" class="no-print bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-sm font-semibold transition border border-slate-200 flex items-center gap-1.5" title="ملء الشاشة">
                         <i class="fa-solid fa-expand text-slate-600" id="fullscreenIcon"></i>
-                        <span class="hidden sm:inline" id="fullscreenText">ملء الشاشة</span>
+                        <span class="hidden md:inline" id="fullscreenText">ملء الشاشة</span>
                     </button>
-                    <button type="button" onclick="window.print()" class="no-print bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-sm font-semibold transition border border-slate-200 flex items-center gap-1.5" title="طباعة الاختبار">
+                    <button type="button" onclick="window.print()" class="no-print bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-sm font-semibold transition border border-slate-200 flex items-center gap-1.5" title="طباعة الاختبار">
                         <i class="fa-solid fa-print"></i>
-                        <span class="hidden sm:inline">طباعة</span>
+                        <span class="hidden md:inline">طباعة</span>
                     </button>
-                    <button type="button" onclick="openImportModal()" class="no-print bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition flex items-center gap-1.5" title="إدخال ولصق اختبار جديد">
+                    <button type="button" onclick="openImportModal()" class="no-print bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white px-3.5 py-2 rounded-xl text-sm font-bold shadow-md transition flex items-center gap-1.5" title="إدخال ولصق اختبار جديد">
                         <i class="fa-solid fa-paste text-amber-300"></i>
-                        <span>لصق اختبار جديد</span>
+                        <span>لصق اختبار</span>
                     </button>
-                    <button type="button" onclick="openPromptModal()" class="no-print bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-sm font-semibold transition border border-slate-200 flex items-center gap-1.5" title="نسخ البرومبت الجاهز">
+                    <button type="button" onclick="openPromptModal()" class="no-print bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-sm font-semibold transition border border-slate-200 flex items-center gap-1.5" title="نسخ البرومبت الجاهز">
                         <i class="fa-solid fa-code text-teal-600"></i>
-                        <span class="hidden sm:inline">البرومبت</span>
+                        <span class="hidden md:inline">البرومبت</span>
                     </button>
                 </div>
             </div>
@@ -342,6 +354,27 @@
                     <div class="flex items-center justify-between text-[11px] text-slate-500">
                         <span>يدعم استخراج الـ JSON تلقائياً حتى لو كان محاطاً بنصوص أو تعليقات.</span>
                         <button type="button" onclick="loadSampleTemplate()" class="text-teal-600 hover:underline font-bold">تحميل نموذج تجريبي</button>
+                    </div>
+
+                    <!-- Mode Select inside Import Modal -->
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 mt-2">
+                        <span class="text-xs font-bold text-slate-700 block mb-2">اختر طريقة تقييم وعرض الإجابات لهذا الاختبار:</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 bg-white cursor-pointer hover:bg-slate-50">
+                                <input type="radio" name="importFeedbackMode" value="instant" class="text-teal-600 focus:ring-teal-500">
+                                <div>
+                                    <span class="font-bold text-slate-800 block">إجابات وتصحيح مباشر</span>
+                                    <span class="text-[11px] text-slate-500">تصحيح فوري عند النقر + زر كشف الإجابة للمقالي</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 bg-white cursor-pointer hover:bg-slate-50">
+                                <input type="radio" name="importFeedbackMode" value="delayed" checked class="text-teal-600 focus:ring-teal-500">
+                                <div>
+                                    <span class="font-bold text-slate-800 block">التصحيح في النهاية (الحالي)</span>
+                                    <span class="text-[11px] text-slate-500">إظهار كافة النتائج والنماذج بعد الضغط على تسليم</span>
+                                </div>
+                            </label>
+                        </div>
                     </div>
                 </div>
 
@@ -625,6 +658,7 @@
         let totalSeconds = 35 * 60;
         let timerInterval = null;
         let previousInputText = ""; // History holder for Undo feature
+        let feedbackMode = "delayed"; // "delayed" (at the end) or "instant" (immediate upon clicking)
 
         const AI_PROMPT_TEMPLATE = `أنت أستاذ جامعي ومصمم اختبارات لمقرر "علم النفس السيبراني".
 المطلوب منك توليد اختبار جديد متكامل بمجموع (30 درجة) وفق الهيكلية التالية:
@@ -683,7 +717,7 @@
             // Render MCQ
             const mcqContainer = document.getElementById('mcqContainer');
             mcqContainer.innerHTML = examData.mcq.slice(0, 10).map((item, idx) => `
-                <div class="question-card p-4 rounded-2xl border border-slate-200 bg-slate-50/60" data-qid="${item.id}" data-type="mcq">
+                <div class="question-card p-4 rounded-2xl border border-slate-200 bg-slate-50/60 transition" data-qid="${item.id}" data-type="mcq">
                     <div class="flex justify-between items-start mb-3">
                         <span class="font-bold text-slate-800 text-base">${item.q}</span>
                         <span class="text-xs font-semibold text-slate-400 bg-white px-2 py-0.5 rounded border border-slate-200">1 درجة</span>
@@ -691,7 +725,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                         ${Object.entries(item.options).map(([optKey, optVal]) => `
                             <div>
-                                <input type="radio" id="${item.id}_${optKey}" name="${item.id}" value="${optKey}" class="hidden custom-radio">
+                                <input type="radio" id="${item.id}_${optKey}" name="${item.id}" value="${optKey}" onchange="handleOptionSelect('${item.id}', 'mcq')" class="hidden custom-radio">
                                 <label for="${item.id}_${optKey}" class="flex items-center gap-2 p-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 cursor-pointer text-sm font-medium transition duration-150">
                                     <span class="w-6 h-6 rounded-lg bg-slate-100 text-slate-600 font-bold flex items-center justify-center text-xs">${optKey === 'A' ? 'أ' : optKey === 'B' ? 'ب' : optKey === 'C' ? 'ج' : 'د'}</span>
                                     <span>${optVal}</span>
@@ -699,25 +733,25 @@
                             </div>
                         `).join('')}
                     </div>
-                    <div class="feedback-msg mt-3 text-xs font-bold hidden p-2 rounded-lg"></div>
+                    <div class="feedback-msg mt-3 text-xs font-bold hidden p-3 rounded-xl"></div>
                 </div>
             `).join('');
 
             // Render True/False
             const tfContainer = document.getElementById('tfContainer');
             tfContainer.innerHTML = examData.tf.slice(0, 10).map((item, idx) => `
-                <div class="question-card p-4 rounded-2xl border border-slate-200 bg-slate-50/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4" data-qid="${item.id}" data-type="tf">
+                <div class="question-card p-4 rounded-2xl border border-slate-200 bg-slate-50/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition" data-qid="${item.id}" data-type="tf">
                     <div class="text-sm md:text-base font-bold text-slate-800 flex-1">
                         ${item.q}
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        <input type="radio" id="${item.id}_t" name="${item.id}" value="T" class="hidden custom-radio">
+                        <input type="radio" id="${item.id}_t" name="${item.id}" value="T" onchange="handleOptionSelect('${item.id}', 'tf')" class="hidden custom-radio">
                         <label for="${item.id}_t" class="px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 cursor-pointer text-xs font-bold transition">صواب <i class="fa-solid fa-check text-emerald-600 mr-1"></i></label>
                         
-                        <input type="radio" id="${item.id}_f" name="${item.id}" value="F" class="hidden custom-radio">
+                        <input type="radio" id="${item.id}_f" name="${item.id}" value="F" onchange="handleOptionSelect('${item.id}', 'tf')" class="hidden custom-radio">
                         <label for="${item.id}_f" class="px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 cursor-pointer text-xs font-bold transition">خطأ <i class="fa-solid fa-xmark text-rose-600 mr-1"></i></label>
                     </div>
-                    <div class="feedback-msg w-full mt-2 text-xs font-bold hidden p-2 rounded-lg"></div>
+                    <div class="feedback-msg w-full mt-2 text-xs font-bold hidden p-3 rounded-xl"></div>
                 </div>
             `).join('');
 
@@ -733,8 +767,16 @@
                     </div>
                     <textarea id="${item.id}" rows="4" placeholder="اكتب إجابتك التحليلية الوافية هنا..." class="w-full p-3.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm bg-white leading-relaxed"></textarea>
                     
+                    <!-- Instant Show Answer Button (Shown only in instant mode) -->
+                    <div class="essay-action-btn mt-2.5 ${feedbackMode === 'instant' ? 'block' : 'hidden'}" id="essayBtnWrap_${item.id}">
+                        <button type="button" onclick="toggleSingleEssayModel('${item.id}')" id="btnToggle_${item.id}" class="text-xs font-bold text-purple-700 hover:text-purple-900 bg-purple-100 hover:bg-purple-200 px-3 py-1.5 rounded-lg border border-purple-200 transition inline-flex items-center gap-1.5">
+                            <i class="fa-regular fa-eye"></i>
+                            <span>إظهار الإجابة النموذجية</span>
+                        </button>
+                    </div>
+
                     <!-- Model Answer Box -->
-                    <div id="modelAns_${idx + 1}" class="hidden mt-3 p-4 bg-purple-50/80 border border-purple-200 rounded-xl text-xs leading-relaxed text-slate-800">
+                    <div id="modelAns_${item.id}" class="hidden mt-3 p-4 bg-purple-50/80 border border-purple-200 rounded-xl text-xs leading-relaxed text-slate-800">
                         <span class="font-bold text-purple-900 block mb-1.5 text-sm"><i class="fa-solid fa-lightbulb ml-1"></i> نموذج الإجابة ومعايير التقييم:</span>
                         <ul class="list-disc list-inside space-y-1 text-slate-700">
                             ${Array.isArray(item.model) ? item.model.map(m => `<li>${m}</li>`).join('') : `<li>${item.model}</li>`}
@@ -742,6 +784,125 @@
                     </div>
                 </div>
             `).join('');
+
+            updateModeUI();
+        }
+
+        // Mode Switching
+        function setFeedbackMode(mode) {
+            feedbackMode = mode;
+            updateModeUI();
+
+            // If switching to instant mode, apply checks to any already answered questions
+            if (feedbackMode === 'instant') {
+                document.querySelectorAll('.essay-action-btn').forEach(b => b.classList.remove('hidden'));
+                evaluateAnsweredQuestionsInstantly();
+                showNotification("تم تفعيل نمط الإجابات المباشرة: ستظهر النتيجة فور النقر، مع زر كشف إجابة الأسئلة المقالية.", "info");
+            } else {
+                // Switching back to delayed mode
+                document.querySelectorAll('.essay-action-btn').forEach(b => b.classList.add('hidden'));
+                // Hide feedback unless the exam has already been submitted
+                const isSubmitted = document.getElementById('submitBtn').disabled;
+                if (!isSubmitted) {
+                    document.querySelectorAll('.feedback-msg').forEach(el => el.classList.add('hidden'));
+                    document.querySelectorAll('[id^="modelAns_"]').forEach(el => el.classList.add('hidden'));
+                    document.querySelectorAll('.question-card').forEach(card => {
+                        card.classList.remove('border-emerald-500', 'border-rose-500', 'bg-emerald-50/40', 'bg-rose-50/40');
+                    });
+                }
+                showNotification("تم تفعيل نمط التصحيح في النهاية: لن تظهر الإجابات إلا عند تسليم الاختبار.", "info");
+            }
+        }
+
+        function updateModeUI() {
+            const instantBtn = document.getElementById('modeInstantBtn');
+            const delayedBtn = document.getElementById('modeDelayedBtn');
+
+            if (feedbackMode === 'instant') {
+                instantBtn.className = "px-3 py-1.5 rounded-lg transition duration-150 flex items-center gap-1.5 bg-amber-500 text-white shadow-sm font-bold";
+                delayedBtn.className = "px-3 py-1.5 rounded-lg transition duration-150 flex items-center gap-1.5 text-slate-600 hover:text-slate-900";
+            } else {
+                instantBtn.className = "px-3 py-1.5 rounded-lg transition duration-150 flex items-center gap-1.5 text-slate-600 hover:text-slate-900";
+                delayedBtn.className = "px-3 py-1.5 rounded-lg transition duration-150 flex items-center gap-1.5 bg-teal-600 text-white shadow-sm font-bold";
+            }
+        }
+
+        // Single Essay Model Answer Toggle for Instant Mode
+        function toggleSingleEssayModel(itemId) {
+            const box = document.getElementById(`modelAns_${itemId}`);
+            const btn = document.getElementById(`btnToggle_${itemId}`);
+            if (!box) return;
+
+            if (box.classList.contains('hidden')) {
+                box.classList.remove('hidden');
+                if (btn) btn.innerHTML = `<i class="fa-regular fa-eye-slash"></i> <span>إخفاء الإجابة النموذجية</span>`;
+            } else {
+                box.classList.add('hidden');
+                if (btn) btn.innerHTML = `<i class="fa-regular fa-eye"></i> <span>إظهار الإجابة النموذجية</span>`;
+            }
+        }
+
+        // Instant Option Selection Handler
+        function handleOptionSelect(itemId, type) {
+            if (feedbackMode !== 'instant') return;
+
+            const selected = document.querySelector(`input[name="${itemId}"]:checked`);
+            if (!selected) return;
+
+            let questionObj = null;
+            if (type === 'mcq') {
+                questionObj = currentExam.mcq.find(q => q.id === itemId);
+            } else {
+                questionObj = currentExam.tf.find(q => q.id === itemId);
+            }
+
+            if (!questionObj) return;
+
+            const card = document.querySelector(`[data-qid="${itemId}"]`);
+            if (!card) return;
+            const feedbackBox = card.querySelector('.feedback-msg');
+
+            card.classList.remove('border-emerald-500', 'border-rose-500', 'bg-emerald-50/40', 'bg-rose-50/40');
+            feedbackBox.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'bg-rose-100', 'text-rose-800');
+
+            const isCorrect = selected.value.toUpperCase() === questionObj.ans.toUpperCase();
+
+            if (type === 'mcq') {
+                if (isCorrect) {
+                    card.classList.add('border-emerald-500', 'bg-emerald-50/40');
+                    feedbackBox.classList.add('bg-emerald-100', 'text-emerald-800');
+                    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-check ml-1"></i> إجابة صحيحة! (${questionObj.ans}) • ${questionObj.exp}`;
+                } else {
+                    card.classList.add('border-rose-500', 'bg-rose-50/40');
+                    feedbackBox.classList.add('bg-rose-100', 'text-rose-800');
+                    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-xmark ml-1"></i> إجابتك: ${selected.value} — الإجابة الصحيحة هي: (${questionObj.ans}) • ${questionObj.exp}`;
+                }
+            } else {
+                const correctText = questionObj.ans.toUpperCase() === 'T' ? 'صواب' : 'خطأ';
+                if (isCorrect) {
+                    card.classList.add('border-emerald-500', 'bg-emerald-50/40');
+                    feedbackBox.classList.add('bg-emerald-100', 'text-emerald-800');
+                    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-check ml-1"></i> إجابة صحيحة (${correctText}) • ${questionObj.exp}`;
+                } else {
+                    card.classList.add('border-rose-500', 'bg-rose-50/40');
+                    feedbackBox.classList.add('bg-rose-100', 'text-rose-800');
+                    const studentAnsText = selected.value.toUpperCase() === 'T' ? 'صواب' : 'خطأ';
+                    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-xmark ml-1"></i> إجابتك: ${studentAnsText} — الإجابة الصحيحة هي: (${correctText}) • ${questionObj.exp}`;
+                }
+            }
+        }
+
+        function evaluateAnsweredQuestionsInstantly() {
+            currentExam.mcq.slice(0, 10).forEach(q => {
+                if (document.querySelector(`input[name="${q.id}"]:checked`)) {
+                    handleOptionSelect(q.id, 'mcq');
+                }
+            });
+            currentExam.tf.slice(0, 10).forEach(q => {
+                if (document.querySelector(`input[name="${q.id}"]:checked`)) {
+                    handleOptionSelect(q.id, 'tf');
+                }
+            });
         }
 
         // Timer Logic
@@ -892,6 +1053,9 @@
             document.getElementById('quizForm').reset();
             document.querySelectorAll('.feedback-msg').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('[id^="modelAns_"]').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('[id^="btnToggle_"]').forEach(btn => {
+                btn.innerHTML = `<i class="fa-regular fa-eye"></i> <span>إظهار الإجابة النموذجية</span>`;
+            });
             document.querySelectorAll('.question-card').forEach(card => {
                 card.classList.remove('border-emerald-500', 'border-rose-500', 'bg-emerald-50/40', 'bg-rose-50/40');
             });
@@ -1078,12 +1242,19 @@
                     throw new Error("تنسيق الأسئلة غير صحيح: قسم essay غير موجود أو غير مكتمل.");
                 }
 
+                // Check chosen mode in the import modal
+                const chosenModeRadio = document.querySelector('input[name="importFeedbackMode"]:checked');
+                if (chosenModeRadio) {
+                    feedbackMode = chosenModeRadio.value;
+                }
+
                 // Render imported quiz
                 renderExam(parsed);
                 closeImportModal();
                 resetExamForm();
 
-                showNotification(`تم بنجاح استيراد وعرض [${parsed.name || 'الاختبار الجديد'}] وهو جاهز للحل الآن!`, "success");
+                const modeLabel = feedbackMode === 'instant' ? 'الإجابات المباشرة' : 'التصحيح في النهاية';
+                showNotification(`تم بنجاح استيراد وعرض [${parsed.name || 'الاختبار الجديد'}] بنمط (${modeLabel}) وهو جاهز للحل الآن!`, "success");
             } catch (err) {
                 showNotification(`خطأ في معالجة النص: ${err.message}. تأكد من استخدام البرومبت المعتمد.`, "error");
             }
