@@ -97,40 +97,54 @@
             
             <div class="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-slate-200/80 pb-6">
                 <div class="flex items-center gap-4 text-center md:text-right">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-slate-900 via-teal-800 to-teal-600 flex items-center justify-center text-white shadow-lg text-2xl font-bold">
-                        <i class="fa-solid fa-graduation-cap"></i>
-                    </div>
+                    <button type="button" onclick="toggleMainView()" class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-slate-900 via-teal-800 to-teal-600 flex items-center justify-center text-white shadow-lg text-2xl font-bold hover:scale-105 active:scale-95 transition transform cursor-pointer border-2 border-teal-400/40" title="انقر للتبديل بين وضع الاختبار ووضع التلخيص">
+                        <i id="mainLogoIcon" class="fa-solid fa-graduation-cap"></i>
+                    </button>
                     <div>
                         <div class="flex items-center gap-2 justify-center md:justify-start">
                             <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-800">جامعة الشرقية</span>
                             <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">PSYC420</span>
                             <span id="formVersionBadge" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">النموذج (أ)</span>
                         </div>
-                        <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 mt-1">اختبار مادة: علم النفس السيبراني</h1>
+                        <h1 id="pageMainHeading" class="text-2xl md:text-3xl font-extrabold text-slate-900 mt-1">اختبار مادة: علم النفس السيبراني</h1>
                         <p class="text-sm text-slate-500">إعداد وتدريس: د. خليفة بن سيف الجهوري</p>
                     </div>
                 </div>
 
-                <!-- Exam Meta Badges -->
-                <div class="grid grid-cols-3 gap-3 w-full md:w-auto text-center">
-                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3">
-                        <span class="text-xs text-slate-500 block font-semibold">الدرجة الكلية</span>
-                        <span class="text-xl font-black text-teal-700">30 درجة</span>
+                <!-- View Switch Tabs & Quick Navigation -->
+                <div class="flex flex-col items-center gap-2 w-full md:w-auto">
+                    <div class="inline-flex p-1 bg-slate-200/80 rounded-2xl border border-slate-300 shadow-inner w-full sm:w-auto justify-center">
+                        <button type="button" onclick="switchView('quiz')" id="tabQuizBtn" class="flex-1 sm:flex-initial px-5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition duration-200 flex items-center justify-center gap-2 bg-white text-teal-800 shadow">
+                            <i class="fa-solid fa-list-check"></i>
+                            <span>الاختبار التفاعلي</span>
+                        </button>
+                        <button type="button" onclick="switchView('summary')" id="tabSummaryBtn" class="flex-1 sm:flex-initial px-5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition duration-200 flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900">
+                            <i class="fa-solid fa-book-bookmark text-amber-500"></i>
+                            <span>التلخيص الشامل</span>
+                        </button>
                     </div>
-                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3">
-                        <span class="text-xs text-slate-500 block font-semibold">عدد الأسئلة</span>
-                        <span class="text-xl font-black text-slate-800">23 سؤال</span>
-                    </div>
-                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3">
-                        <span class="text-xs text-slate-500 block font-semibold">الوقت المقترح</span>
-                        <span class="text-xl font-black text-amber-600">35 دقيقة</span>
+
+                    <!-- Exam Meta Badges (Shown in Quiz mode) -->
+                    <div id="examMetaBadges" class="grid grid-cols-3 gap-2 w-full text-center">
+                        <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-2 sm:p-2.5">
+                            <span class="text-[11px] text-slate-500 block font-semibold">الدرجة</span>
+                            <span class="text-base sm:text-lg font-black text-teal-700">30 درجة</span>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-2 sm:p-2.5">
+                            <span class="text-[11px] text-slate-500 block font-semibold">الأسئلة</span>
+                            <span class="text-base sm:text-lg font-black text-slate-800">23 سؤال</span>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-2 sm:p-2.5">
+                            <span class="text-[11px] text-slate-500 block font-semibold">الوقت</span>
+                            <span class="text-base sm:text-lg font-black text-amber-600">35 د</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Student Info & Controls Strip -->
+            <!-- Student Info & Controls Strip (Dynamic based on active view) -->
             <div class="mt-6 flex flex-wrap items-center justify-between gap-4">
-                <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+                <div id="studentInputGroup" class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
                     <div class="relative w-full sm:w-64">
                         <i class="fa-regular fa-user absolute right-3 top-3.5 text-slate-400"></i>
                         <input type="text" id="studentName" placeholder="اسم الطالب الثلاثي..." class="w-full pl-3 pr-10 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm bg-slate-50/50">
@@ -143,8 +157,8 @@
 
                 <!-- Mode Selection Toggle & Actions -->
                 <div class="flex flex-wrap items-center gap-2.5 w-full sm:w-auto justify-end">
-                    <!-- Feedback Mode Toggle -->
-                    <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
+                    <!-- Feedback Mode Toggle (Quiz View Only) -->
+                    <div id="feedbackModeGroup" class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
                         <button type="button" id="modeInstantBtn" onclick="setFeedbackMode('instant')" class="px-3 py-1.5 rounded-lg transition duration-150 flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
                             <i class="fa-solid fa-bolt text-amber-500"></i>
                             <span>إجابات مباشرة</span>
@@ -155,27 +169,44 @@
                         </button>
                     </div>
 
-                    <div class="flex items-center gap-2 bg-slate-100 text-slate-700 font-bold px-3.5 py-1.5 rounded-xl text-sm border border-slate-200">
+                    <div id="timerBadge" class="flex items-center gap-2 bg-slate-100 text-slate-700 font-bold px-3.5 py-1.5 rounded-xl text-sm border border-slate-200">
                         <i class="fa-regular fa-clock text-teal-600"></i>
                         <span id="timerText">35:00</span>
                     </div>
+
                     <!-- Fullscreen Toggle Button -->
                     <button type="button" onclick="toggleFullScreen()" id="fullscreenBtn" class="no-print bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-sm font-semibold transition border border-slate-200 flex items-center gap-1.5" title="ملء الشاشة">
                         <i class="fa-solid fa-expand text-slate-600" id="fullscreenIcon"></i>
                         <span class="hidden md:inline" id="fullscreenText">ملء الشاشة</span>
                     </button>
-                    <button type="button" onclick="window.print()" class="no-print bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-sm font-semibold transition border border-slate-200 flex items-center gap-1.5" title="طباعة الاختبار">
+                    <button type="button" onclick="window.print()" class="no-print bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-sm font-semibold transition border border-slate-200 flex items-center gap-1.5" title="طباعة الصفحة">
                         <i class="fa-solid fa-print"></i>
                         <span class="hidden md:inline">طباعة</span>
                     </button>
-                    <button type="button" onclick="openImportModal()" class="no-print bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white px-3.5 py-2 rounded-xl text-sm font-bold shadow-md transition flex items-center gap-1.5" title="إدخال ولصق اختبار جديد">
-                        <i class="fa-solid fa-paste text-amber-300"></i>
-                        <span>لصق اختبار</span>
-                    </button>
-                    <button type="button" onclick="openPromptModal()" class="no-print bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-sm font-semibold transition border border-slate-200 flex items-center gap-1.5" title="نسخ البرومبت الجاهز">
-                        <i class="fa-solid fa-code text-teal-600"></i>
-                        <span class="hidden md:inline">البرومبت</span>
-                    </button>
+
+                    <!-- Quiz-Specific Action Buttons -->
+                    <div id="quizToolbarButtons" class="flex items-center gap-2">
+                        <button type="button" onclick="openImportModal()" class="no-print bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white px-3.5 py-2 rounded-xl text-sm font-bold shadow-md transition flex items-center gap-1.5" title="إدخال ولصق اختبار جديد">
+                            <i class="fa-solid fa-paste text-amber-300"></i>
+                            <span>لصق اختبار</span>
+                        </button>
+                        <button type="button" onclick="openPromptModal()" class="no-print bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-sm font-semibold transition border border-slate-200 flex items-center gap-1.5" title="نسخ البرومبت الجاهز">
+                            <i class="fa-solid fa-code text-teal-600"></i>
+                            <span class="hidden md:inline">برومبت الاختبار</span>
+                        </button>
+                    </div>
+
+                    <!-- Summary-Specific Action Buttons -->
+                    <div id="summaryToolbarButtons" class="hidden flex items-center gap-2">
+                        <button type="button" onclick="openImportSummaryModal()" class="no-print bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-3.5 py-2 rounded-xl text-sm font-bold shadow-md transition flex items-center gap-1.5" title="إدخال كود تلخيص جديد">
+                            <i class="fa-solid fa-paste text-yellow-200"></i>
+                            <span>لصق تلخيص</span>
+                        </button>
+                        <button type="button" onclick="openSummaryPromptModal()" class="no-print bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 px-3 py-2 rounded-xl text-sm font-bold transition flex items-center gap-1.5" title="نسخ برومبت التلخيص">
+                            <i class="fa-solid fa-file-pen text-amber-600"></i>
+                            <span class="hidden md:inline">برومبت التلخيص</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </header>
@@ -183,123 +214,157 @@
         <!-- Notification Message Box (Dynamic) -->
         <div id="statusAlert" class="hidden rounded-2xl p-4 transition-all duration-300 font-semibold text-sm"></div>
 
-        <!-- Quiz Form -->
-        <form id="quizForm" onsubmit="submitExam(event)" class="space-y-6">
-
-            <!-- SECTION 1: MULTIPLE CHOICE (10 Marks) -->
-            <section class="glass-card rounded-3xl p-6 md:p-8 shadow-xl">
-                <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-6">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center font-bold text-lg">
-                            1
+        <!-- ============================================== -->
+        <!-- VIEW 1: QUIZ FORM CONTAINER                    -->
+        <!-- ============================================== -->
+        <div id="quizViewSection" class="space-y-6">
+            <form id="quizForm" onsubmit="submitExam(event)" class="space-y-6">
+                <!-- SECTION 1: MULTIPLE CHOICE (10 Marks) -->
+                <section class="glass-card rounded-3xl p-6 md:p-8 shadow-xl">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center font-bold text-lg">
+                                1
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-bold text-slate-900">القسم الأول: أسئلة الاختيار من متعدد</h2>
+                                <p class="text-xs text-slate-500">اختر الإجابة الصحيحة من بين الخيارات المتاحة (10 درجات - درجة لكل سؤال)</p>
+                            </div>
                         </div>
-                        <div>
-                            <h2 class="text-xl font-bold text-slate-900">القسم الأول: أسئلة الاختيار من متعدد</h2>
-                            <p class="text-xs text-slate-500">اختر الإجابة الصحيحة من بين الخيارات المتاحة (10 درجات - درجة لكل سؤال)</p>
-                        </div>
+                        <span class="bg-teal-50 text-teal-700 text-xs font-extrabold px-3 py-1.5 rounded-full border border-teal-200">10 درجات</span>
                     </div>
-                    <span class="bg-teal-50 text-teal-700 text-xs font-extrabold px-3 py-1.5 rounded-full border border-teal-200">10 درجات</span>
-                </div>
-                <div class="space-y-6" id="mcqContainer">
-                    <!-- Injected dynamically via JavaScript -->
-                </div>
-            </section>
-
-            <!-- SECTION 2: TRUE / FALSE (10 Marks) -->
-            <section class="glass-card rounded-3xl p-6 md:p-8 shadow-xl">
-                <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-6">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-lg">
-                            2
-                        </div>
-                        <div>
-                            <h2 class="text-xl font-bold text-slate-900">القسم الثاني: أسئلة الصواب والخطأ</h2>
-                            <p class="text-xs text-slate-500">حدد ما إذا كانت العبارة التالية صحيحة (صواب) أم غير صحيحة (خطأ) (10 درجات - درجة لكل سؤال)</p>
-                        </div>
+                    <div class="space-y-6" id="mcqContainer">
+                        <!-- Injected dynamically via JavaScript -->
                     </div>
-                    <span class="bg-amber-50 text-amber-700 text-xs font-extrabold px-3 py-1.5 rounded-full border border-amber-200">10 درجات</span>
-                </div>
-                <div class="space-y-4" id="tfContainer">
-                    <!-- Injected dynamically via JavaScript -->
-                </div>
-            </section>
+                </section>
 
-            <!-- SECTION 3: ESSAY QUESTIONS (10 Marks) -->
-            <section class="glass-card rounded-3xl p-6 md:p-8 shadow-xl">
-                <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-6">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center font-bold text-lg">
-                            3
+                <!-- SECTION 2: TRUE / FALSE (10 Marks) -->
+                <section class="glass-card rounded-3xl p-6 md:p-8 shadow-xl">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-lg">
+                                2
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-bold text-slate-900">القسم الثاني: أسئلة الصواب والخطأ</h2>
+                                <p class="text-xs text-slate-500">حدد ما إذا كانت العبارة التالية صحيحة (صواب) أم غير صحيحة (خطأ) (10 درجات - درجة لكل سؤال)</p>
+                            </div>
                         </div>
-                        <div>
-                            <h2 class="text-xl font-bold text-slate-900">القسم الثالث: الأسئلة المقالية والتحليلية</h2>
-                            <p class="text-xs text-slate-500">أجب بدقة وموضوعية مستعيناً بما درسته في مقرر علم النفس السيبراني (10 درجات مقسمة على 3 أسئلة)</p>
-                        </div>
+                        <span class="bg-amber-50 text-amber-700 text-xs font-extrabold px-3 py-1.5 rounded-full border border-amber-200">10 درجات</span>
                     </div>
-                    <span class="bg-purple-50 text-purple-700 text-xs font-extrabold px-3 py-1.5 rounded-full border border-purple-200">10 درجات</span>
-                </div>
-                <div class="space-y-6" id="essayContainer">
-                    <!-- Injected dynamically via JavaScript -->
-                </div>
-            </section>
+                    <div class="space-y-4" id="tfContainer">
+                        <!-- Injected dynamically via JavaScript -->
+                    </div>
+                </section>
 
-            <!-- Action Buttons Footer -->
-            <div class="glass-card rounded-3xl p-6 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div class="text-xs text-slate-500 text-center sm:text-right">
-                    <p><i class="fa-solid fa-circle-info text-teal-600 ml-1"></i> عند الضغط على "تسليم الاختبار وتصحيح الدرجة"، سيتم تقييم أسئلة الاختياري والصح والخطأ آلياً (20 درجة) وعرض نماذج الإجابة للأسئلة المقالية (10 درجات).</p>
+                <!-- SECTION 3: ESSAY QUESTIONS (10 Marks) -->
+                <section class="glass-card rounded-3xl p-6 md:p-8 shadow-xl">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center font-bold text-lg">
+                                3
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-bold text-slate-900">القسم الثالث: الأسئلة المقالية والتحليلية</h2>
+                                <p class="text-xs text-slate-500">أجب بدقة وموضوعية مستعيناً بما درسته في مقرر علم النفس السيبراني (10 درجات مقسمة على 3 أسئلة)</p>
+                            </div>
+                        </div>
+                        <span class="bg-purple-50 text-purple-700 text-xs font-extrabold px-3 py-1.5 rounded-full border border-purple-200">10 درجات</span>
+                    </div>
+                    <div class="space-y-6" id="essayContainer">
+                        <!-- Injected dynamically via JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Action Buttons Footer -->
+                <div class="glass-card rounded-3xl p-6 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="text-xs text-slate-500 text-center sm:text-right">
+                        <p><i class="fa-solid fa-circle-info text-teal-600 ml-1"></i> عند الضغط على "تسليم الاختبار وتصحيح الدرجة"، سيتم تقييم أسئلة الاختياري والصح والخطأ آلياً (20 درجة) وعرض نماذج الإجابة للأسئلة المقالية (10 درجات).</p>
+                    </div>
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <button type="submit" id="submitBtn" class="w-full sm:w-auto bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-extrabold px-8 py-3.5 rounded-2xl shadow-lg transition duration-200 transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>تسليم الاختبار وتصحيح الدرجة</span>
+                        </button>
+                    </div>
                 </div>
-                <div class="flex items-center gap-3 w-full sm:w-auto">
-                    <button type="submit" id="submitBtn" class="w-full sm:w-auto bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-extrabold px-8 py-3.5 rounded-2xl shadow-lg transition duration-200 transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-paper-plane"></i>
-                        <span>تسليم الاختبار وتصحيح الدرجة</span>
+            </form>
+
+            <!-- Result Modal / Card (Shown After Submission) -->
+            <div id="resultsSection" class="hidden glass-card rounded-3xl p-6 md:p-8 shadow-2xl border-t-8 border-teal-500 animate-fade-in space-y-6">
+                <div class="text-center space-y-2">
+                    <div id="scoreBadgeIcon" class="w-20 h-20 mx-auto rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-3xl shadow-inner mb-3">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">نتيجة الاختبار التقييمي</h2>
+                    <p id="studentGreeting" class="text-sm font-semibold text-slate-600"></p>
+                </div>
+
+                <!-- Score Breakdown -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="p-4 rounded-2xl bg-teal-50 border border-teal-200 text-center">
+                        <span class="text-xs text-teal-800 font-bold block mb-1">القسم الموضوعي (الآلي)</span>
+                        <span id="objScore" class="text-2xl font-black text-teal-900">0 / 20</span>
+                        <span class="text-[11px] text-teal-600 block mt-1">(اختياري + صح وخطأ)</span>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-purple-50 border border-purple-200 text-center">
+                        <span class="text-xs text-purple-800 font-bold block mb-1">القسم المقالي (معلم / تقديري)</span>
+                        <span id="essayScoreHolder" class="text-2xl font-black text-purple-900">-- / 10</span>
+                        <span class="text-[11px] text-purple-600 block mt-1">راجع نماذج الإجابة أدناه</span>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-900 text-white text-center">
+                        <span class="text-xs text-slate-300 font-bold block mb-1">الدرجة المحققة حالياً</span>
+                        <span id="totalPreliminary" class="text-2xl font-black text-amber-400">0 / 30</span>
+                        <span class="text-[11px] text-slate-400 block mt-1">تكتمل برصد درجات المقال</span>
+                    </div>
+                </div>
+
+                <!-- Detailed Notes -->
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed">
+                    <p class="font-bold text-slate-900 mb-1"><i class="fa-solid fa-list-check text-teal-600 ml-1"></i> ملحوظات المراجعة:</p>
+                    <p>تم تمييز الخيارات الصحيحة باللون الأخضر <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500"></span> والإجابات الخاطئة باللون الأحمر <span class="inline-block w-2.5 h-2.5 rounded-full bg-rose-500"></span> مع عرض التغذية الراجعة التفصيلية لكل سؤال، بالإضافة لكشف معايير ونموذج الإجابة للأسئلة المقالية.</p>
+                </div>
+
+                <div class="flex justify-center gap-4 pt-2 no-print">
+                    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-sm font-bold transition">
+                        <i class="fa-solid fa-arrow-up ml-1"></i> مراجعة الإجابات من الأعلى
                     </button>
                 </div>
             </div>
-        </form>
+        </div>
 
-        <!-- Result Modal / Card (Shown After Submission) -->
-        <div id="resultsSection" class="hidden glass-card rounded-3xl p-6 md:p-8 shadow-2xl border-t-8 border-teal-500 animate-fade-in space-y-6">
-            <div class="text-center space-y-2">
-                <div id="scoreBadgeIcon" class="w-20 h-20 mx-auto rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-3xl shadow-inner mb-3">
-                    <i class="fa-solid fa-award"></i>
-                </div>
-                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">نتيجة الاختبار التقييمي</h2>
-                <p id="studentGreeting" class="text-sm font-semibold text-slate-600"></p>
-            </div>
-
-            <!-- Score Breakdown -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="p-4 rounded-2xl bg-teal-50 border border-teal-200 text-center">
-                    <span class="text-xs text-teal-800 font-bold block mb-1">القسم الموضوعي (الآلي)</span>
-                    <span id="objScore" class="text-2xl font-black text-teal-900">0 / 20</span>
-                    <span class="text-[11px] text-teal-600 block mt-1">(اختياري + صح وخطأ)</span>
-                </div>
-                <div class="p-4 rounded-2xl bg-purple-50 border border-purple-200 text-center">
-                    <span class="text-xs text-purple-800 font-bold block mb-1">القسم المقالي (معلم / تقديري)</span>
-                    <span id="essayScoreHolder" class="text-2xl font-black text-purple-900">-- / 10</span>
-                    <span class="text-[11px] text-purple-600 block mt-1">راجع نماذج الإجابة أدناه</span>
-                </div>
-                <div class="p-4 rounded-2xl bg-slate-900 text-white text-center">
-                    <span class="text-xs text-slate-300 font-bold block mb-1">الدرجة المحققة حالياً</span>
-                    <span id="totalPreliminary" class="text-2xl font-black text-amber-400">0 / 30</span>
-                    <span class="text-[11px] text-slate-400 block mt-1">تكتمل برصد درجات المقال</span>
+        <!-- ============================================== -->
+        <!-- VIEW 2: SUMMARY VIEW CONTAINER                -->
+        <!-- ============================================== -->
+        <div id="summaryViewSection" class="hidden space-y-6">
+            <!-- Summary Header Banner -->
+            <div class="glass-card rounded-3xl p-6 md:p-8 shadow-xl border-r-8 border-amber-500 relative overflow-hidden">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div>
+                        <span class="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-black">الدليل الأكاديمي والتلخيص المعرفي</span>
+                        <h2 id="summaryDocTitle" class="text-2xl md:text-3xl font-extrabold text-slate-900 mt-2">الملخص الشامل لمقرر علم النفس السيبراني</h2>
+                        <p id="summaryDocSub" class="text-sm text-slate-600 mt-1">ملخص مكثف ومنظم للمفاهيم والنظريات الأساسية للمقرر لتسهيل المراجعة والاستيعاب السريع.</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="openImportSummaryModal()" class="px-4 py-2.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md transition flex items-center gap-2">
+                            <i class="fa-solid fa-file-circle-plus"></i>
+                            <span>استيراد تلخيص جديد</span>
+                        </button>
+                        <button onclick="copySummaryPromptDirectly()" class="px-4 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs border border-slate-300 transition flex items-center gap-2">
+                            <i class="fa-regular fa-copy text-amber-600"></i>
+                            <span>نسخ برومبت التلخيص</span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Detailed Notes -->
-            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed">
-                <p class="font-bold text-slate-900 mb-1"><i class="fa-solid fa-list-check text-teal-600 ml-1"></i> ملحوظات المراجعة:</p>
-                <p>تم تمييز الخيارات الصحيحة باللون الأخضر <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500"></span> والإجابات الخاطئة باللون الأحمر <span class="inline-block w-2.5 h-2.5 rounded-full bg-rose-500"></span> مع عرض التغذية الراجعة التفصيلية لكل سؤال، بالإضافة لكشف معايير ونموذج الإجابة للأسئلة المقالية.</p>
-            </div>
-
-            <div class="flex justify-center gap-4 pt-2 no-print">
-                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-sm font-bold transition">
-                    <i class="fa-solid fa-arrow-up ml-1"></i> مراجعة الإجابات من الأعلى
-                </button>
+            <!-- Summary Modules Cards Container -->
+            <div id="summaryCardsContainer" class="space-y-6">
+                <!-- Dynamically loaded via JavaScript -->
             </div>
         </div>
 
-        <!-- Custom Confirm Reset Modal (No native alert/confirm) -->
+        <!-- Custom Confirm Reset Modal -->
         <div id="resetModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
             <div class="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl border border-slate-100 text-center space-y-4">
                 <div class="w-16 h-16 mx-auto rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-2xl">
@@ -428,7 +493,77 @@
             </div>
         </div>
 
-        <!-- Custom Prompt Modal (To copy prompt easily) -->
+        <!-- Custom Import SUMMARY Modal (Paste JSON / Custom Summary) -->
+        <div id="importSummaryModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
+            <div class="bg-white rounded-3xl p-5 md:p-7 max-w-2xl w-full shadow-2xl border border-slate-100 space-y-4 my-auto">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-book-bookmark"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">استيراد تلخيص جديد للمقرر</h3>
+                            <p class="text-xs text-slate-500">الصق كود الـ JSON للتلخيص ليتم تحويله فوراً لبطاقات معرفية ميسرة</p>
+                        </div>
+                    </div>
+                    <button onclick="closeImportSummaryModal()" class="text-slate-400 hover:text-slate-600 p-2 text-lg">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Code Area & Clear/Undo for Summary -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <label for="rawSummaryInput" class="text-xs font-black text-slate-700 flex items-center gap-1.5">
+                            <i class="fa-solid fa-code text-amber-600"></i>
+                            <span>كود التلخيص (JSON):</span>
+                        </label>
+                        <div class="flex items-center gap-1.5">
+                            <button type="button" id="undoSummaryBtn" onclick="undoSummaryClear()" disabled class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-400 border border-slate-200 transition flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed hover:enabled:bg-slate-200 hover:enabled:text-slate-700">
+                                <i class="fa-solid fa-rotate-left text-blue-600"></i>
+                                <span>تراجع</span>
+                            </button>
+                            <button type="button" onclick="clearSummaryInput()" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 transition flex items-center gap-1">
+                                <i class="fa-solid fa-trash-can text-rose-600"></i>
+                                <span>حذف</span>
+                            </button>
+                        </div>
+                    </div>
+                    <textarea id="rawSummaryInput" rows="7" placeholder="الصق كود الـ JSON للتلخيص هنا، أو اضغط زر 'لصق وتحويل فوري' بالأسفل..." class="w-full p-3 font-mono text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-slate-50" style="touch-action: pan-x pan-y;"></textarea>
+
+                    <!-- Quick Prompt Copy Bar for Summary -->
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-2 p-2.5 bg-amber-50/80 rounded-xl border border-amber-200 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-lg bg-amber-200 text-amber-800 flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+                            <span class="text-amber-900 font-semibold">أمر توليد التلخيص للذكاء الاصطناعي:</span>
+                        </div>
+                        <button type="button" onclick="copySummaryPromptDirectly()" class="px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-bold transition flex items-center gap-1.5 shadow-sm text-xs">
+                            <i class="fa-regular fa-copy"></i>
+                            <span id="copySummaryPromptBtnText">نسخ أمر التلخيص</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Footer Buttons: Summary -->
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-2.5 pt-3 border-t border-slate-100">
+                    <button onclick="closeImportSummaryModal()" class="w-full sm:w-auto px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition order-2 sm:order-1">
+                        إلغاء
+                    </button>
+                    <div class="flex items-center gap-2 w-full sm:w-auto justify-end order-1 sm:order-2">
+                        <button type="button" onclick="applyImportedSummary()" class="w-1/2 sm:w-auto px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs transition flex items-center justify-center gap-1.5 shadow">
+                            <i class="fa-solid fa-check"></i>
+                            <span>تطبيق الكود</span>
+                        </button>
+                        <button type="button" onclick="pasteAndConvertSummaryInstantly()" class="w-1/2 sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-extrabold text-xs transition shadow-md flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-paste text-yellow-200"></i>
+                            <span>لصق وتحويل فوري</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Prompt Modal for Quiz -->
         <div id="promptModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
             <div class="bg-white rounded-3xl p-6 md:p-8 max-w-xl w-full shadow-2xl border border-slate-100 space-y-4">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -437,7 +572,7 @@
                             <i class="fa-solid fa-terminal"></i>
                         </div>
                         <div>
-                            <h3 class="text-lg font-bold text-slate-900">البرومبت الموجه للذكاء الاصطناعي</h3>
+                            <h3 class="text-lg font-bold text-slate-900">برومبت توليد الاختبار (AI Prompt)</h3>
                             <p class="text-xs text-slate-500">انسخ هذا النص وضعه في ChatGPT أو Gemini لتوليد الاختبار</p>
                         </div>
                     </div>
@@ -460,17 +595,52 @@
             </div>
         </div>
 
+        <!-- Custom Prompt Modal for Summary -->
+        <div id="summaryPromptModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+            <div class="bg-white rounded-3xl p-6 md:p-8 max-w-xl w-full shadow-2xl border border-slate-100 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-book-open-reader"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">برومبت توليد التلخيص (AI Prompt)</h3>
+                            <p class="text-xs text-slate-500">انسخ هذا النص وضعه في الذكاء الاصطناعي لإنشاء ملخص احترافي</p>
+                        </div>
+                    </div>
+                    <button onclick="closeSummaryPromptModal()" class="text-slate-400 hover:text-slate-600 p-2 text-lg">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div class="relative">
+                    <textarea id="summaryPromptTextHolder" readonly rows="8" class="w-full p-3 font-mono text-xs rounded-xl border border-slate-200 bg-slate-50 leading-relaxed text-slate-700 focus:outline-none"></textarea>
+                </div>
+
+                <div class="flex items-center justify-between pt-2">
+                    <span id="summaryCopySuccessMsg" class="text-xs font-bold text-emerald-600 opacity-0 transition-opacity">تم نسخ برومبت التلخيص بنجاح!</span>
+                    <button onclick="copySummaryPromptFromModal()" class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm transition flex items-center gap-2">
+                        <i class="fa-regular fa-copy"></i>
+                        <span>نسخ البرومبت للحافظة</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Footer Credits -->
         <footer class="text-center text-xs text-slate-400 py-4 border-t border-slate-800/20">
             <p>جامعة الشرقية • كلية الآداب والعلوم الإنسانية • مقرر علم النفس السيبراني (PSYC420)</p>
-            <p class="mt-1 text-slate-400">نظام الاختبارات الإلكترونية التفاعلي الذاتي © 2026</p>
+            <p class="mt-1 text-slate-400">نظام الاختبارات والتلخيصات التفاعلية الذاتي © 2026</p>
         </footer>
 
     </div>
 
     <!-- Logic Script & Question Bank -->
     <script>
-        // Default initial question sets (Acts as base or instant fallback)
+        // Active View State: 'quiz' or 'summary'
+        let currentView = 'quiz';
+
+        // Default initial question sets (Base fallback)
         const initialExamA = {
             name: "النموذج التأسيسي (أ)",
             mcq: [
@@ -690,14 +860,76 @@
             ]
         };
 
-        // Current Active Exam State
+        // Default Rich Summary Data (Based on PDF)
+        const initialSummaryData = {
+            title: "الملخص الشامل لمقرر علم النفس السيبراني (PSYC420)",
+            subtitle: "جامعة الشرقية • إعداد وتدريس: د. خليفة بن سيف الجهوري",
+            modules: [
+                {
+                    id: "mod_1",
+                    title: "الفصل الأول: مدخل إلى علم النفس السيبراني والظواهر الرقمية",
+                    badge: "الأساسيات والمفاهيم",
+                    color: "teal",
+                    icon: "fa-network-wired",
+                    keyConcepts: [
+                        { term: "السيبرانية (Cyber)", def: "صفة لكل ما يرتبط بثقافة الحواسيب، تقنية المعلومات، الواقع الافتراضي، أو فضاء الإنترنت." },
+                        { term: "علم النفس السيبراني", def: "دراسة السلوك البشري والتفاعلات النفسية والاجتماعية مع البيئات الرقمية (الإنترنت، منصات التواصل، الألعاب الافتراضية) للتعامل مع التحديات مثل الإدمان والتنمر." },
+                        { term: "تاريخ النشأة", def: "نشأ في أوائل التسعينيات مع انتشار الويب، وتأسست أول مجلة متخصصة عام 1998م، وتسارع الاهتمام به مع منصات التواصل وجائحة كوفيد-19." }
+                    ],
+                    bulletPoints: [
+                        "أهمية العلم: تحسين الصحة النفسية، حماية المستخدمين، تطوير تقنيات ملائمة للإنسان، وتطوير أساليب العلاج والإرشاد النفسي عن بُعد.",
+                        "الإدمان الرقمي: اعتماد مفرط على الأجهزة، أعراضه: صعوبة إدارة الوقت، اضطراب النوم، العزلة، وتغيرات المزاج.",
+                        "أنواع الإدمان الرقمي: إدمان وسائل التواصل، إدمان الألعاب (Gaming)، إدمان تصفح الإنترنت، وإدمان التسوق الإلكتروني.",
+                        "التعصب الرقمي: التمسك المتشدد بالآراء ورفض الآخرين بسبب (الفقاعات الرقمية Filter Bubbles)، غياب الرقابة وسهولة إخفاء الهوية."
+                    ]
+                },
+                {
+                    id: "mod_2",
+                    title: "الفصل الثاني: شخصية الإنسان في العالم الرقمي",
+                    badge: "الهوية والنظريات",
+                    color: "purple",
+                    icon: "fa-id-card-clip",
+                    keyConcepts: [
+                        { term: "الشخصية الرقمية", def: "الطريقة التي يعبر بها الفرد عن نفسه ويتفاعل مع الآخرين عبر المنصات الرقمية؛ قد تتطابق أو تختلف تماماً عن شخصيته الواقعية." },
+                        { term: "الهو، الأنا، والأنا الأعلى", def: "مكونات الشخصية عند فرويد؛ الهو (غرائز وإشباع فوري)، الأنا (الواقع والاتزان)، الأنا الأعلى (الضمير والقيم الأخلاقية)." },
+                        { term: "النمذجة والكفاءة الذاتية", def: "ركائز النظرية المعرفية الاجتماعية (ألبرت باندورا): التعلم بملاحظة الآخرين والإيمان بالقدرة على إنجاز الأهداف." }
+                    ],
+                    bulletPoints: [
+                        "الأنماط السلوكية الرقمية: الشخصية العلنية (محبة للظهور والتفاعل المكثف)، الخفية (المراقبة بصمت واستخدام أسماء مستعارة)، التفاعلية (بناء شبكات ونقاش)، الإبداعية (صناعة المحتوى)، الجدلية (إثارة النقاشات الحادة)، المستكشفة (الفضول والتجربة)، والمزدوجة (إظهار صورة مثالية مغايرة للواقع).",
+                        "أبعاد الشخصية الرقمية: البعد الاجتماعي، التواصلي (الرموز واللغة)، الانفعالي، الأخلاقي، الإبداعي، الترفيهي، المعرفي، والهوياتي.",
+                        "النظريات النفسية: السلوكية (صفحة بيضاء والتعزيز يحدد السلوك)، السمات (ألبورت: مركزية وثانوية / أيزنك: انبساط، عصابية، ذهان / الخمسة الكبار)، والإنسانية (ماسلو: هرم الحاجات / روجرز: القبول غير المشروط)."
+                    ]
+                },
+                {
+                    id: "mod_3",
+                    title: "الفصل الثالث: الاحتياجات النفسية للشباب في العالم الرقمي",
+                    badge: "الدوافع والنمو",
+                    color: "amber",
+                    icon: "fa-heart-pulse",
+                    keyConcepts: [
+                        { term: "الحاجة (Need)", def: "حالة من النقص أو الحرمان (جسدياً أو نفسياً)، وتكون ثابتة نسبياً وضرورية لتوازن الفرد مثل الحاجة للأمان والتقدير." },
+                        { term: "الدافع (Motive)", def: "قوة داخلية ديناميكية متحركة تنشأ استجابة للحاجة، وتنشط السلوك وتوجهه نحو تحقيق هدف محدد." },
+                        { term: "الباعث (Trigger/Incentive)", def: "مثير أو عامل مباشر يحرك السلوك في لحظة معينة، ويتصف بكونه آنياً وقصير المدى (كإعلان مسابقة أو تنبيه رسالة)." }
+                    ],
+                    bulletPoints: [
+                        "الاحتياجات الرقمية للشباب: البحث عن الانتماء، تحقيق الهوية، الأمان النفسي، الترفيه والتنفيس الانفعالي، والنمو الإبداعي.",
+                        "العوامل المؤثرة في الشخصية الرقمية: عوامل فردية (العمر، الجنس، الدوافع)، اجتماعية (الأسرة، الأقران، الثقافة)، تقنية (الخوارزميات، سهولة الوصول 24/7)، ونفسية (تقدير الذات وإدارة الصورة الشخصية).",
+                        "أهمية الإشباع المتوازن: إشباع الاحتياجات النفسية-الاجتماعية يمنح الشباب اتزاناً نفسياً ويحميهم من الاغتراب والعزلة السلبية."
+                    ]
+                }
+            ]
+        };
+
+        // Current Active State Holders
         let currentExam = initialExamA;
-        let generatedExamCounter = 1;
+        let currentSummary = initialSummaryData;
         let totalSeconds = 35 * 60;
         let timerInterval = null;
-        let previousInputText = ""; // History holder for Undo feature
-        let feedbackMode = "delayed"; // "delayed" (at the end) or "instant" (immediate upon clicking)
+        let previousInputText = "";
+        let previousSummaryText = "";
+        let feedbackMode = "delayed";
 
+        // AI Prompts
         const AI_PROMPT_TEMPLATE = `أنت أستاذ جامعي ومصمم اختبارات لمقرر "علم النفس السيبراني".
 المطلوب منك توليد اختبار جديد متكامل بمجموع (30 درجة) وفق الهيكلية التالية:
 - 10 أسئلة اختيار من متعدد (درجة لكل سؤال = 10 درجات).
@@ -744,6 +976,335 @@
   ]
 }
 \`\`\``;
+
+        const AI_SUMMARY_PROMPT_TEMPLATE = `أنت خبير تربوي ومستشار في علم النفس السيبراني.
+المطلوب منك توليد تلخيص شامل ومكثف لمقرر علم النفس السيبراني (أو أي موضوع تريده) بصيغة JSON نظيفة، مقسم إلى فصول وبطاقات بصرية غنية تشمل: المفاهيم الأساسية، وأهم النقاط المستفادة.
+
+قم بإخراج النتيجة بصيغة JSON داخل وسم كود بالهيكلية التالية تماماً:
+
+\`\`\`json
+{
+  "title": "عنوان التلخيص الرئيسي هنا",
+  "subtitle": "عنوان فرعي أو اسم المقرر والمعد",
+  "modules": [
+    {
+      "id": "mod_1",
+      "title": "الفصل الأول: اسم الفصل أو الموضوع",
+      "badge": "شارة موجزة",
+      "color": "teal",
+      "icon": "fa-brain",
+      "keyConcepts": [
+        {
+          "term": "المفهوم أو المصطلح العلمي الأول",
+          "def": "شرح مركز ودقيق للمفهوم."
+        },
+        {
+          "term": "المفهوم الثاني",
+          "def": "شرح المصطلح."
+        }
+      ],
+      "bulletPoints": [
+        "النقطة الأساسية الأولى المستفادة من هذا الفصل.",
+        "النقطة الأساسية الثانية بالتفصيل.",
+        "النقطة الأساسية الثالثة."
+      ]
+    }
+  ]
+}
+\`\`\`
+
+ملاحظات:
+1. تأكد من أن يكون التلخيص دقيقاً وشاملاً وقائماً على أسس علمية ومفاهيم مقررة.
+2. لا تضع أي مقدمات أو شروحات خارج حدود كود الـ JSON.`;
+
+        // Switch between Quiz & Summary Views
+        function switchView(target) {
+            currentView = target;
+            const quizSection = document.getElementById('quizViewSection');
+            const summarySection = document.getElementById('summaryViewSection');
+            const tabQuizBtn = document.getElementById('tabQuizBtn');
+            const tabSummaryBtn = document.getElementById('tabSummaryBtn');
+            const logoIcon = document.getElementById('mainLogoIcon');
+            const pageHeading = document.getElementById('pageMainHeading');
+            const quizToolbar = document.getElementById('quizToolbarButtons');
+            const summaryToolbar = document.getElementById('summaryToolbarButtons');
+            const feedbackGroup = document.getElementById('feedbackModeGroup');
+            const timerBadge = document.getElementById('timerBadge');
+            const studentInputGroup = document.getElementById('studentInputGroup');
+            const examMetaBadges = document.getElementById('examMetaBadges');
+
+            if (target === 'quiz') {
+                quizSection.classList.remove('hidden');
+                summarySection.classList.add('hidden');
+                
+                // Tab styling
+                tabQuizBtn.className = "flex-1 sm:flex-initial px-5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition duration-200 flex items-center justify-center gap-2 bg-white text-teal-800 shadow";
+                tabSummaryBtn.className = "flex-1 sm:flex-initial px-5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition duration-200 flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900";
+                
+                // Logo & Header
+                logoIcon.className = "fa-solid fa-graduation-cap";
+                pageHeading.textContent = "اختبار مادة: علم النفس السيبراني";
+                
+                // Controls visibility
+                quizToolbar.classList.remove('hidden');
+                summaryToolbar.classList.add('hidden');
+                feedbackGroup.classList.remove('hidden');
+                timerBadge.classList.remove('hidden');
+                studentInputGroup.classList.remove('hidden');
+                examMetaBadges.classList.remove('hidden');
+                
+                showNotification("أهلاً بك في وضع الاختبار التفاعلي (30 درجة). يمكنك البدء بالحل الآن.", "info");
+            } else {
+                quizSection.classList.add('hidden');
+                summarySection.classList.remove('hidden');
+                
+                // Tab styling
+                tabSummaryBtn.className = "flex-1 sm:flex-initial px-5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition duration-200 flex items-center justify-center gap-2 bg-amber-500 text-white shadow";
+                tabQuizBtn.className = "flex-1 sm:flex-initial px-5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition duration-200 flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900";
+                
+                // Logo & Header
+                logoIcon.className = "fa-solid fa-book-open-reader";
+                pageHeading.textContent = "ملخص المقرر: علم النفس السيبراني";
+                
+                // Controls visibility
+                quizToolbar.classList.add('hidden');
+                summaryToolbar.classList.remove('hidden');
+                feedbackGroup.classList.add('hidden');
+                timerBadge.classList.add('hidden');
+                studentInputGroup.classList.add('hidden');
+                examMetaBadges.classList.add('hidden');
+
+                showNotification("تم الانتقال إلى وضع التلخيص الأكاديمي. استعرض الفصول والمفاهيم الجوهرية.", "info");
+            }
+        }
+
+        // Quick toggle triggered by clicking the logo
+        function toggleMainView() {
+            if (currentView === 'quiz') {
+                switchView('summary');
+            } else {
+                switchView('quiz');
+            }
+        }
+
+        // Render Summary Data
+        function renderSummary(summaryData) {
+            currentSummary = summaryData;
+            document.getElementById('summaryDocTitle').textContent = summaryData.title || "الملخص الشامل لمقرر علم النفس السيبراني";
+            document.getElementById('summaryDocSub').textContent = summaryData.subtitle || "دليل المراجعة الأكاديمي والمفاهيم الأساسية";
+
+            const container = document.getElementById('summaryCardsContainer');
+            if (!summaryData.modules || !Array.isArray(summaryData.modules)) {
+                container.innerHTML = `<div class="p-6 text-center text-slate-500">لا توجد وحدات تلخيصية متوفرة.</div>`;
+                return;
+            }
+
+            container.innerHTML = summaryData.modules.map((mod, index) => {
+                const colorTheme = mod.color || (index % 3 === 0 ? 'teal' : index % 3 === 1 ? 'purple' : 'amber');
+                const borderColor = colorTheme === 'purple' ? 'border-purple-500' : colorTheme === 'amber' ? 'border-amber-500' : 'border-teal-500';
+                const badgeBg = colorTheme === 'purple' ? 'bg-purple-100 text-purple-800' : colorTheme === 'amber' ? 'bg-amber-100 text-amber-800' : 'bg-teal-100 text-teal-800';
+                const iconBg = colorTheme === 'purple' ? 'bg-purple-50 text-purple-700' : colorTheme === 'amber' ? 'bg-amber-50 text-amber-700' : 'bg-teal-50 text-teal-700';
+
+                return `
+                    <div class="glass-card rounded-3xl p-6 md:p-8 shadow-xl border-r-4 ${borderColor} space-y-6">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-200/80 pb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-2xl ${iconBg} flex items-center justify-center text-xl font-bold shadow-sm">
+                                    <i class="fa-solid ${mod.icon || 'fa-bookmark'}"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-900">${mod.title}</h3>
+                                    <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${badgeBg}">${mod.badge || 'وحدة دراسية'}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Key Terms / Definitions Grid -->
+                        ${mod.keyConcepts && mod.keyConcepts.length > 0 ? `
+                            <div>
+                                <h4 class="text-xs font-black text-slate-700 mb-3 flex items-center gap-1.5 uppercase tracking-wider">
+                                    <i class="fa-solid fa-spell-check text-teal-600"></i>
+                                    <span>المصطلحات والمفاهيم الأساسية:</span>
+                                </h4>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                                    ${mod.keyConcepts.map(kc => `
+                                        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-start">
+                                            <span class="font-bold text-slate-900 text-sm mb-1.5 flex items-center gap-1.5">
+                                                <i class="fa-solid fa-circle-dot text-amber-500 text-[10px]"></i>
+                                                <span>${kc.term}</span>
+                                            </span>
+                                            <p class="text-xs text-slate-600 leading-relaxed">${kc.def}</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        <!-- Core Bullet Points -->
+                        ${mod.bulletPoints && mod.bulletPoints.length > 0 ? `
+                            <div class="p-4 rounded-2xl bg-slate-50/80 border border-slate-200 space-y-2.5">
+                                <h4 class="text-xs font-black text-slate-700 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-lightbulb text-amber-500"></i>
+                                    <span>أبرز النقاط والمحاور المستفادة:</span>
+                                </h4>
+                                <ul class="space-y-2 text-xs text-slate-700 leading-relaxed list-none pr-1">
+                                    ${mod.bulletPoints.map(bp => `
+                                        <li class="flex items-start gap-2">
+                                            <i class="fa-solid fa-arrow-left text-teal-600 mt-1 shrink-0 text-[11px]"></i>
+                                            <span>${bp}</span>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Summary Modals Handlers
+        function openImportSummaryModal() {
+            document.getElementById('importSummaryModal').classList.remove('hidden');
+        }
+
+        function closeImportSummaryModal() {
+            document.getElementById('importSummaryModal').classList.add('hidden');
+        }
+
+        function openSummaryPromptModal() {
+            document.getElementById('summaryPromptTextHolder').value = AI_SUMMARY_PROMPT_TEMPLATE;
+            document.getElementById('summaryPromptModal').classList.remove('hidden');
+        }
+
+        function closeSummaryPromptModal() {
+            document.getElementById('summaryPromptModal').classList.add('hidden');
+            document.getElementById('summaryCopySuccessMsg').classList.add('opacity-0');
+        }
+
+        function clearSummaryInput() {
+            const inputArea = document.getElementById('rawSummaryInput');
+            const undoBtn = document.getElementById('undoSummaryBtn');
+            const val = inputArea.value;
+
+            if (val.trim() !== "") {
+                previousSummaryText = val;
+                inputArea.value = "";
+                undoBtn.disabled = false;
+                undoBtn.classList.remove('text-slate-400');
+                undoBtn.classList.add('text-slate-700');
+                showNotification("تم مسح كود التلخيص، يمكنك التراجع عبر زر 'تراجع'.", "info");
+            }
+        }
+
+        function undoSummaryClear() {
+            const inputArea = document.getElementById('rawSummaryInput');
+            const undoBtn = document.getElementById('undoSummaryBtn');
+
+            if (previousSummaryText) {
+                inputArea.value = previousSummaryText;
+                previousSummaryText = "";
+                undoBtn.disabled = true;
+                undoBtn.classList.add('text-slate-400');
+                undoBtn.classList.remove('text-slate-700');
+                showNotification("تم استرجاع كود التلخيص بنجاح.", "success");
+            }
+        }
+
+        function copySummaryPromptDirectly() {
+            const temp = document.createElement('textarea');
+            temp.value = AI_SUMMARY_PROMPT_TEMPLATE;
+            temp.style.position = 'fixed';
+            temp.style.left = '-9999px';
+            document.body.appendChild(temp);
+            temp.focus();
+            temp.select();
+
+            try {
+                document.execCommand('copy');
+                const btnText = document.getElementById('copySummaryPromptBtnText');
+                if (btnText) {
+                    btnText.textContent = "تم نسخ الأمر!";
+                    setTimeout(() => {
+                        btnText.textContent = "نسخ أمر التلخيص";
+                    }, 2000);
+                }
+                showNotification("تم نسخ أمر التلخيص للحافظة بنجاح! الصقه في ChatGPT أو Gemini للحصول على كود التلخيص.", "success");
+            } catch (e) {
+                showNotification("تعذر النسخ التلقائي، يمكنك نسخه يدوياً من زر برومبت التلخيص.", "error");
+            } finally {
+                document.body.removeChild(temp);
+            }
+        }
+
+        function copySummaryPromptFromModal() {
+            const promptArea = document.getElementById('summaryPromptTextHolder');
+            promptArea.select();
+            promptArea.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+            
+            const msg = document.getElementById('summaryCopySuccessMsg');
+            msg.classList.remove('opacity-0');
+            setTimeout(() => {
+                msg.classList.add('opacity-0');
+            }, 2500);
+        }
+
+        // Paste & Convert Summary Instantly
+        async function pasteAndConvertSummaryInstantly() {
+            const inputArea = document.getElementById('rawSummaryInput');
+            let text = "";
+
+            if (navigator.clipboard && navigator.clipboard.readText) {
+                try {
+                    text = await navigator.clipboard.readText();
+                } catch (e) {
+                    console.warn("Clipboard access limited", e);
+                }
+            }
+
+            if (!text || text.trim() === "") {
+                text = inputArea.value.trim();
+            }
+
+            if (!text || text.trim() === "") {
+                inputArea.focus();
+                inputArea.placeholder = "اضغط هنا ثم اضغط (Ctrl + V) للصق، وسيتحول التلخيص فوراً!";
+                showNotification("يرجى لصق الكود داخل المربع (Ctrl + V) ليتم التحويل فورياً.", "info");
+
+                inputArea.onpaste = function() {
+                    setTimeout(() => {
+                        applyImportedSummary();
+                        inputArea.onpaste = null;
+                    }, 100);
+                };
+                return;
+            }
+
+            inputArea.value = text;
+            applyImportedSummary();
+        }
+
+        function applyImportedSummary() {
+            const raw = document.getElementById('rawSummaryInput').value.trim();
+            if (!raw) {
+                showNotification("يرجى لصق كود التلخيص أولاً في الحقل المخصص.", "error");
+                return;
+            }
+
+            try {
+                const parsed = extractJsonFromString(raw);
+                if (!parsed.modules || !Array.isArray(parsed.modules) || parsed.modules.length < 1) {
+                    throw new Error("تنسيق التلخيص غير صحيح: مصفوفة modules غير موجودة أو فارغة.");
+                }
+
+                renderSummary(parsed);
+                closeImportSummaryModal();
+                switchView('summary');
+                showNotification(`تم استيراد وعرض [${parsed.title || 'التلخيص الجديد'}] بنجاح!`, "success");
+            } catch (err) {
+                showNotification(`خطأ في معالجة كود التلخيص: ${err.message}`, "error");
+            }
+        }
 
         // Render Current Exam Object
         function renderExam(examData) {
@@ -831,15 +1392,12 @@
             feedbackMode = mode;
             updateModeUI();
 
-            // If switching to instant mode, apply checks to any already answered questions
             if (feedbackMode === 'instant') {
                 document.querySelectorAll('.essay-action-btn').forEach(b => b.classList.remove('hidden'));
                 evaluateAnsweredQuestionsInstantly();
                 showNotification("تم تفعيل نمط الإجابات المباشرة: ستظهر النتيجة فور النقر، مع زر كشف إجابة الأسئلة المقالية.", "info");
             } else {
-                // Switching back to delayed mode
                 document.querySelectorAll('.essay-action-btn').forEach(b => b.classList.add('hidden'));
-                // Hide feedback unless the exam has already been submitted
                 const isSubmitted = document.getElementById('submitBtn').disabled;
                 if (!isSubmitted) {
                     document.querySelectorAll('.feedback-msg').forEach(el => el.classList.add('hidden'));
@@ -1244,7 +1802,6 @@
             const inputArea = document.getElementById('rawQuizInput');
             let text = "";
 
-            // 1. Try reading directly from Navigator Clipboard API
             if (navigator.clipboard && navigator.clipboard.readText) {
                 try {
                     text = await navigator.clipboard.readText();
@@ -1253,18 +1810,15 @@
                 }
             }
 
-            // 2. If Clipboard API was blocked or returned empty, check input box value
             if (!text || text.trim() === "") {
                 text = inputArea.value.trim();
             }
 
-            // 3. If still empty, focus and prompt the user gracefully
             if (!text || text.trim() === "") {
                 inputArea.focus();
-                inputArea.placeholder = "⚠️ المتصفح منع القراءة التلقائية: اضغط هنا ثم اضغط (Ctrl + V) للصق، وسيتحول الاختبار فوراً!";
+                inputArea.placeholder = "اضغط هنا ثم اضغط (Ctrl + V) للصق، وسيتحول الاختبار فوراً!";
                 showNotification("يرجى لصق الكود داخل المربع (Ctrl + V) وسيقوم النظام بتحويله تلقائياً فورياً.", "info");
                 
-                // Add one-time paste event listener to auto-convert as soon as user presses Ctrl+V
                 inputArea.onpaste = function() {
                     setTimeout(() => {
                         applyImportedQuiz();
@@ -1274,7 +1828,6 @@
                 return;
             }
 
-            // If text is successfully retrieved, put it into textarea and convert
             inputArea.value = text;
             applyImportedQuiz();
         }
@@ -1283,10 +1836,8 @@
         function extractJsonFromString(str) {
             if (!str) throw new Error("النص فارغ");
 
-            // Strip Markdown code block indicators
             let cleaned = str.replace(/```json/gi, '').replace(/```javascript/gi, '').replace(/```/g, '').trim();
 
-            // Locate first opening brace '{' and matching outermost closing brace '}'
             const firstBrace = cleaned.indexOf('{');
             const lastBrace = cleaned.lastIndexOf('}');
 
@@ -1294,18 +1845,15 @@
                 cleaned = cleaned.substring(firstBrace, lastBrace + 1);
             }
 
-            // Remove trailing commas before closing braces/brackets (common AI JSON issue)
             cleaned = cleaned.replace(/,\s*([\]}])/g, '$1');
 
-            // Try standard parse
             try {
                 return JSON.parse(cleaned);
             } catch (initialErr) {
-                // Second attempt: replace curly quotes or strange formatting
                 try {
                     const sanitized = cleaned
-                        .replace(/[\u201C\u201D]/g, '"') // smart double quotes
-                        .replace(/[\u2018\u2019]/g, "'") // smart single quotes
+                        .replace(/[\u201C\u201D]/g, '"')
+                        .replace(/[\u2018\u2019]/g, "'")
                         .replace(/\r\n/g, '\n');
                     return JSON.parse(sanitized);
                 } catch (secondErr) {
@@ -1324,7 +1872,6 @@
             try {
                 const parsed = extractJsonFromString(rawText);
 
-                // Validation
                 if (!parsed.mcq || !Array.isArray(parsed.mcq) || parsed.mcq.length < 1) {
                     throw new Error("تنسيق الأسئلة غير صحيح: قسم mcq غير موجود أو غير مكتمل.");
                 }
@@ -1335,16 +1882,15 @@
                     throw new Error("تنسيق الأسئلة غير صحيح: قسم essay غير موجود أو غير مكتمل.");
                 }
 
-                // Check chosen mode in the import modal
                 const chosenModeRadio = document.querySelector('input[name="importFeedbackMode"]:checked');
                 if (chosenModeRadio) {
                     feedbackMode = chosenModeRadio.value;
                 }
 
-                // Render imported quiz
                 renderExam(parsed);
                 closeImportModal();
                 resetExamForm();
+                switchView('quiz');
 
                 const modeLabel = feedbackMode === 'instant' ? 'الإجابات المباشرة' : 'التصحيح في النهاية';
                 showNotification(`تم بنجاح استيراد وعرض [${parsed.name || 'الاختبار الجديد'}] بنمط (${modeLabel}) وهو جاهز للحل الآن!`, "success");
@@ -1356,6 +1902,7 @@
         // Initialize on window load
         window.onload = function() {
             renderExam(initialExamA);
+            renderSummary(initialSummaryData);
             startTimer();
         };
     </script>
