@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار علم النفس السيبراني - جامعة الشرقية</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cairo & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        asu: {
+                            blue: '#0d3b66',
+                            gold: '#f4a261',
+                            teal: '#088395',
+                            dark: '#0a192f',
+                            light: '#f8fafc'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #1e293b;
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .custom-radio:checked + label {
+            border-color: #088395;
+            background-color: #f0fdfa;
+            color: #0f766e;
+            box-shadow: 0 4px 6px -1px rgba(8, 131, 149, 0.15);
+        }
+        .correct-answer-glow {
+            border-color: #10b981 !important;
+            background-color: #ecfdf5 !important;
+            color: #065f46 !important;
+        }
+        .wrong-answer-glow {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            color: #991b1b !important;
+        }
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            .glass-card {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+            }
+        }
+    </style>
+</head>
+<body class="p-3 md:p-6 lg:p-8 flex flex-col justify-between items-center text-slate-800">
+
+    <!-- Container -->
+    <div class="w-full max-w-4xl mx-auto space-y-6">
+
+        <!-- Top Header Card -->
+        <header class="glass-card rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden border-t-4 border-asu-teal">
+            <div class="absolute -top-10 -left-10 w-40 h-40 bg-teal-500/10 rounded-full blur-2xl"></div>
+            <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-blue-500/10 rounded-full blur-2xl"></div>
+            
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-slate-200/80 pb-6">
+                <div class="flex items-center gap-4 text-center md:text-right">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-slate-900 via-teal-800 to-teal-600 flex items-center justify-center text-white shadow-lg text-2xl font-bold">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 justify-center md:justify-start">
+                            <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-800">جامعة الشرقية</span>
+                            <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">PSYC420</span>
+                            <span id="formVersionBadge" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">النموذج (أ)</span>
+                        </div>
+                        <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 mt-1">اختبار مادة: علم النفس السيبراني</h1>
+                        <p class="text-sm text-slate-500">إعداد وتدريس: د. خليفة بن سيف الجهوري</p>
+                    </div>
+                </div>
+
+                <!-- Exam Meta Badges -->
+                <div class="grid grid-cols-3 gap-3 w-full md:w-auto text-center">
+                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3">
+                        <span class="text-xs text-slate-500 block font-semibold">الدرجة الكلية</span>
+                        <span class="text-xl font-black text-teal-700">30 درجة</span>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3">
+                        <span class="text-xs text-slate-500 block font-semibold">عدد الأسئلة</span>
+                        <span class="text-xl font-black text-slate-800">23 سؤال</span>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3">
+                        <span class="text-xs text-slate-500 block font-semibold">الوقت المقترح</span>
+                        <span class="text-xl font-black text-amber-600">35 دقيقة</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Info & Controls Strip -->
+            <div class="mt-6 flex flex-wrap items-center justify-between gap-4">
+                <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+                    <div class="relative w-full sm:w-64">
+                        <i class="fa-regular fa-user absolute right-3 top-3.5 text-slate-400"></i>
+                        <input type="text" id="studentName" placeholder="اسم الطالب الثلاثي..." class="w-full pl-3 pr-10 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm bg-slate-50/50">
+                    </div>
+                    <div class="relative w-full sm:w-44">
+                        <i class="fa-regular fa-id-badge absolute right-3 top-3.5 text-slate-400"></i>
+                        <input type="text" id="studentId" placeholder="الرقم الجامعي..." class="w-full pl-3 pr-10 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm bg-slate-50/50">
+                    </div>
+                </div>
+
+                <!-- Timer & Actions -->
+                <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                    <div class="flex items-center gap-2 bg-slate-100 text-slate-700 font-bold px-4 py-2 rounded-xl text-sm border border-slate-200">
+                        <i class="fa-regular fa-clock text-teal-600"></i>
+                        <span id="timerText">35:00</span>
+                    </div>
+                    <!-- Fullscreen Toggle Button -->
+                    <button type="button" onclick="toggleFullScreen()" id="fullscreenBtn" class="no-print bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-sm font-semibold transition border border-slate-200 flex items-center gap-1.5" title="ملء الشاشة">
+                        <i class="fa-solid fa-expand text-slate-600" id="fullscreenIcon"></i>
+                        <span class="hidden sm:inline" id="fullscreenText">ملء الشاشة</span>
+                    </button>
+                    <button type="button" onclick="window.print()" class="no-print bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-sm font-semibold transition border border-slate-200 flex items-center gap-1.5" title="طباعة الاختبار">
+                        <i class="fa-solid fa-print"></i>
+                        <span class="hidden sm:inline">طباعة</span>
+                    </button>
+                    <button type="button" onclick="openImportModal()" class="no-print bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition flex items-center gap-1.5" title="إدخال ولصق اختبار جديد">
+                        <i class="fa-solid fa-paste text-amber-300"></i>
+                        <span>لصق اختبار جديد</span>
+                    </button>
+                    <button type="button" onclick="openPromptModal()" class="no-print bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-sm font-semibold transition border border-slate-200 flex items-center gap-1.5" title="نسخ البرومبت الجاهز">
+                        <i class="fa-solid fa-code text-teal-600"></i>
+                        <span class="hidden sm:inline">البرومبت</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Notification Message Box (Dynamic) -->
+        <div id="statusAlert" class="hidden rounded-2xl p-4 transition-all duration-300 font-semibold text-sm"></div>
+
+        <!-- Quiz Form -->
+        <form id="quizForm" onsubmit="submitExam(event)" class="space-y-6">
+
+            <!-- SECTION 1: MULTIPLE CHOICE (10 Marks) -->
+            <section class="glass-card rounded-3xl p-6 md:p-8 shadow-xl">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center font-bold text-lg">
+                            1
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-900">القسم الأول: أسئلة الاختيار من متعدد</h2>
+                            <p class="text-xs text-slate-500">اختر الإجابة الصحيحة من بين الخيارات المتاحة (10 درجات - درجة لكل سؤال)</p>
+                        </div>
+                    </div>
+                    <span class="bg-teal-50 text-teal-700 text-xs font-extrabold px-3 py-1.5 rounded-full border border-teal-200">10 درجات</span>
+                </div>
+                <div class="space-y-6" id="mcqContainer">
+                    <!-- Injected dynamically via JavaScript -->
+                </div>
+            </section>
+
+            <!-- SECTION 2: TRUE / FALSE (10 Marks) -->
+            <section class="glass-card rounded-3xl p-6 md:p-8 shadow-xl">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-lg">
+                            2
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-900">القسم الثاني: أسئلة الصواب والخطأ</h2>
+                            <p class="text-xs text-slate-500">حدد ما إذا كانت العبارة التالية صحيحة (صواب) أم غير صحيحة (خطأ) (10 درجات - درجة لكل سؤال)</p>
+                        </div>
+                    </div>
+                    <span class="bg-amber-50 text-amber-700 text-xs font-extrabold px-3 py-1.5 rounded-full border border-amber-200">10 درجات</span>
+                </div>
+                <div class="space-y-4" id="tfContainer">
+                    <!-- Injected dynamically via JavaScript -->
+                </div>
+            </section>
+
+            <!-- SECTION 3: ESSAY QUESTIONS (10 Marks) -->
+            <section class="glass-card rounded-3xl p-6 md:p-8 shadow-xl">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center font-bold text-lg">
+                            3
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-900">القسم الثالث: الأسئلة المقالية والتحليلية</h2>
+                            <p class="text-xs text-slate-500">أجب بدقة وموضوعية مستعيناً بما درسته في مقرر علم النفس السيبراني (10 درجات مقسمة على 3 أسئلة)</p>
+                        </div>
+                    </div>
+                    <span class="bg-purple-50 text-purple-700 text-xs font-extrabold px-3 py-1.5 rounded-full border border-purple-200">10 درجات</span>
+                </div>
+                <div class="space-y-6" id="essayContainer">
+                    <!-- Injected dynamically via JavaScript -->
+                </div>
+            </section>
+
+            <!-- Action Buttons Footer -->
+            <div class="glass-card rounded-3xl p-6 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-xs text-slate-500 text-center sm:text-right">
+                    <p><i class="fa-solid fa-circle-info text-teal-600 ml-1"></i> عند الضغط على "تسليم الاختبار وتصحيح الدرجة"، سيتم تقييم أسئلة الاختياري والصح والخطأ آلياً (20 درجة) وعرض نماذج الإجابة للأسئلة المقالية (10 درجات).</p>
+                </div>
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <button type="submit" id="submitBtn" class="w-full sm:w-auto bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-extrabold px-8 py-3.5 rounded-2xl shadow-lg transition duration-200 transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>تسليم الاختبار وتصحيح الدرجة</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Result Modal / Card (Shown After Submission) -->
+        <div id="resultsSection" class="hidden glass-card rounded-3xl p-6 md:p-8 shadow-2xl border-t-8 border-teal-500 animate-fade-in space-y-6">
+            <div class="text-center space-y-2">
+                <div id="scoreBadgeIcon" class="w-20 h-20 mx-auto rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-3xl shadow-inner mb-3">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">نتيجة الاختبار التقييمي</h2>
+                <p id="studentGreeting" class="text-sm font-semibold text-slate-600"></p>
+            </div>
+
+            <!-- Score Breakdown -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="p-4 rounded-2xl bg-teal-50 border border-teal-200 text-center">
+                    <span class="text-xs text-teal-800 font-bold block mb-1">القسم الموضوعي (الآلي)</span>
+                    <span id="objScore" class="text-2xl font-black text-teal-900">0 / 20</span>
+                    <span class="text-[11px] text-teal-600 block mt-1">(اختياري + صح وخطأ)</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-purple-50 border border-purple-200 text-center">
+                    <span class="text-xs text-purple-800 font-bold block mb-1">القسم المقالي (معلم / تقديري)</span>
+                    <span id="essayScoreHolder" class="text-2xl font-black text-purple-900">-- / 10</span>
+                    <span class="text-[11px] text-purple-600 block mt-1">راجع نماذج الإجابة أدناه</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-900 text-white text-center">
+                    <span class="text-xs text-slate-300 font-bold block mb-1">الدرجة المحققة حالياً</span>
+                    <span id="totalPreliminary" class="text-2xl font-black text-amber-400">0 / 30</span>
+                    <span class="text-[11px] text-slate-400 block mt-1">تكتمل برصد درجات المقال</span>
+                </div>
+            </div>
+
+            <!-- Detailed Notes -->
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed">
+                <p class="font-bold text-slate-900 mb-1"><i class="fa-solid fa-list-check text-teal-600 ml-1"></i> ملحوظات المراجعة:</p>
+                <p>تم تمييز الخيارات الصحيحة باللون الأخضر <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500"></span> والإجابات الخاطئة باللون الأحمر <span class="inline-block w-2.5 h-2.5 rounded-full bg-rose-500"></span> مع عرض التغذية الراجعة التفصيلية لكل سؤال، بالإضافة لكشف معايير ونموذج الإجابة للأسئلة المقالية.</p>
+            </div>
+
+            <div class="flex justify-center gap-4 pt-2 no-print">
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-sm font-bold transition">
+                    <i class="fa-solid fa-arrow-up ml-1"></i> مراجعة الإجابات من الأعلى
+                </button>
+            </div>
+        </div>
+
+        <!-- Custom Confirm Reset Modal (No native alert/confirm) -->
+        <div id="resetModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+            <div class="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl border border-slate-100 text-center space-y-4">
+                <div class="w-16 h-16 mx-auto rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-rotate-right text-indigo-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">إعادة تعيين الاختبار الحالي؟</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                    سيتم مسح جميع الإجابات الحالية وإعادة تشغيل العداد الزمني.
+                </p>
+                <div class="flex items-center justify-center gap-3 pt-2">
+                    <button onclick="confirmReset()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm transition flex items-center gap-2">
+                        <i class="fa-solid fa-check"></i>
+                        <span>تأكيد الإعادة</span>
+                    </button>
+                    <button onclick="closeResetModal()" class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition">
+                        إلغاء
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Import Quiz Modal (Paste JSON / Custom Exam) -->
+        <div id="importModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+            <div class="bg-white rounded-3xl p-6 md:p-8 max-w-2xl w-full shadow-2xl border border-slate-100 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-file-import"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">لصق وتحويل اختبار جديد</h3>
+                            <p class="text-xs text-slate-500">الصق نص الـ JSON الذي تم توليده من الذكاء الاصطناعي</p>
+                        </div>
+                    </div>
+                    <button onclick="closeImportModal()" class="text-slate-400 hover:text-slate-600 p-2 text-lg">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <label for="rawQuizInput" class="text-xs font-bold text-slate-700 block">نص الاختبار (JSON أو كود التوليد):</label>
+                        <div class="flex items-center gap-1.5">
+                            <!-- Undo Button -->
+                            <button type="button" id="undoBtn" onclick="undoTextClear()" disabled class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-400 border border-slate-200 transition flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed hover:enabled:bg-slate-200 hover:enabled:text-slate-700" title="تراجع عن الحذف">
+                                <i class="fa-solid fa-rotate-left text-blue-600"></i>
+                                <span>تراجع</span>
+                            </button>
+                            <!-- Clear Code Button -->
+                            <button type="button" onclick="clearQuizInput()" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 transition flex items-center gap-1" title="حذف الكود بالكامل">
+                                <i class="fa-solid fa-trash-can text-rose-600"></i>
+                                <span>حذف الكود</span>
+                            </button>
+                        </div>
+                    </div>
+                    <textarea id="rawQuizInput" rows="10" placeholder="الصق كود الاختبار هنا مباشرة..." class="w-full p-3 font-mono text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-slate-50"></textarea>
+                    <div class="flex items-center justify-between text-[11px] text-slate-500">
+                        <span>يدعم استخراج الـ JSON تلقائياً حتى لو كان محاطاً بنصوص أو تعليقات.</span>
+                        <button type="button" onclick="loadSampleTemplate()" class="text-teal-600 hover:underline font-bold">تحميل نموذج تجريبي</button>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+                    <button onclick="closeImportModal()" class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition">
+                        إلغاء
+                    </button>
+                    <button onclick="applyImportedQuiz()" class="px-6 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm transition shadow-md flex items-center gap-2">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span>تحويل وعرض الاختبار الآن</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Prompt Modal (To copy prompt easily) -->
+        <div id="promptModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+            <div class="bg-white rounded-3xl p-6 md:p-8 max-w-xl w-full shadow-2xl border border-slate-100 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-terminal"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">البرومبت الموجه للذكاء الاصطناعي</h3>
+                            <p class="text-xs text-slate-500">انسخ هذا النص وضعه في ChatGPT أو Gemini لتوليد الاختبار</p>
+                        </div>
+                    </div>
+                    <button onclick="closePromptModal()" class="text-slate-400 hover:text-slate-600 p-2 text-lg">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div class="relative">
+                    <textarea id="promptTextHolder" readonly rows="8" class="w-full p-3 font-mono text-xs rounded-xl border border-slate-200 bg-slate-50 leading-relaxed text-slate-700 focus:outline-none"></textarea>
+                </div>
+
+                <div class="flex items-center justify-between pt-2">
+                    <span id="copySuccessMsg" class="text-xs font-bold text-emerald-600 opacity-0 transition-opacity">تم نسخ البرومبت بنجاح!</span>
+                    <button onclick="copyPromptToClipboard()" class="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm transition flex items-center gap-2">
+                        <i class="fa-regular fa-copy"></i>
+                        <span>نسخ البرومبت للحافظة</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Credits -->
+        <footer class="text-center text-xs text-slate-400 py-4 border-t border-slate-800/20">
+            <p>جامعة الشرقية • كلية الآداب والعلوم الإنسانية • مقرر علم النفس السيبراني (PSYC420)</p>
+            <p class="mt-1 text-slate-400">نظام الاختبارات الإلكترونية التفاعلي الذاتي © 2026</p>
+        </footer>
+
+    </div>
+
+    <!-- Logic Script & Question Bank -->
+    <script>
+        // Default initial question sets (Acts as base or instant fallback)
+        const initialExamA = {
+            name: "النموذج التأسيسي (أ)",
+            mcq: [
+                {
+                    id: "mcq_1",
+                    q: "١. نشأ علم النفس السيبراني كحقل علمي متخصص حديثًا في بداية:",
+                    options: {
+                        A: "أوائل السبعينيات مع ظهور أول حاسوب",
+                        B: "أوائل التسعينيات مع تزايد استخدام الإنترنت",
+                        C: "عام 2019 مع تفشي جائحة كوفيد-19",
+                        D: "أواخر الثمانينيات مع انطلاق الهواتف النقالة"
+                    },
+                    ans: "B",
+                    exp: "نشأ علم النفس السيبراني حديثاً في أوائل التسعينيات مع ازدياد استخدام الإنترنت وتطبيقاته."
+                },
+                {
+                    id: "mcq_2",
+                    q: "٢. كلمة 'سيبر' (Cyber) تعني في الأصل صفة لأي شيء يرتبط بـ:",
+                    options: {
+                        A: "ثقافة الحواسيب وتقنية المعلومات أو فضاء الإنترنت",
+                        B: "الذكاء البشري الخالص وعمليات الدماغ الفسيولوجية",
+                        C: "الأسلحة الإلكترونية العسكرية فقط",
+                        D: "الشبكات السلكية الأرضية للهواتف التقليدية"
+                    },
+                    ans: "A",
+                    exp: "كلمة سيبر (Cyber) تعني صفة لكل ما هو مرتبط بثقافة الحواسيب أو الفضاء السيبراني الافتراضي."
+                },
+                {
+                    id: "mcq_3",
+                    q: "٣. وفقاً لتصنيف أنماط الشخصية الرقمية، الشخصية التي تفضل المشاهدة والمتابعة بصمت دون مشاركة وتستخدم غالباً أسماء مستعارة هي:",
+                    options: {
+                        A: "الشخصية العلنية",
+                        B: "الشخصية الجدلية",
+                        C: "الشخصية الخفية",
+                        D: "الشخصية المستكشفة"
+                    },
+                    ans: "C",
+                    exp: "الشخصية الخفية تميل إلى المشاهدة والمراقبة وتفضل الخصوصية واستخدام الأسماء المستعارة."
+                },
+                {
+                    id: "mcq_4",
+                    q: "٤. في نظرية التحليل النفسي لفرويد، يمثل الجزء المسؤول عن إشباع الرغبات والغرائز الفورية دون اعتبار للواقع:",
+                    options: {
+                        A: "الهو (Id)",
+                        B: "الأنا (Ego)",
+                        C: "الأنا الأعلى (Superego)",
+                        D: "الذات المثالية (Ideal Self)"
+                    },
+                    ans: "A",
+                    exp: "الهو (Id) يمثل الجزء الغريزي اللاواعي الساعي للإشباع الفوري، والأنا يتوسط بينه وبين الواقع."
+                },
+                {
+                    id: "mcq_5",
+                    q: "٥. العالم الذي عرّف الشخصية بأنها 'تنظيم ديناميكي داخل الفرد للأنظمة النفسية والجسدية التي تحدد سلوكه وتفكيره' هو:",
+                    options: {
+                        A: "غوردون ألبورت (Gordon Allport)",
+                        B: "كارل يونغ (Carl Jung)",
+                        C: "ب. ف. سكنر (B. F. Skinner)",
+                        D: "أبراهام ماسلو (Abraham Maslow)"
+                    },
+                    ans: "A",
+                    exp: "غوردون ألبورت هو صاحب التعريف الشهير للشخصية كتنظيم ديناميكي للأنظمة النفسجسمية."
+                },
+                {
+                    id: "mcq_6",
+                    q: "٦. يُعرف مفهوم 'التعلم بالملاحظة والنمذجة' و'الكفاءة الذاتية' كركيزة أساسية في أي نظرية من نظريات الشخصية؟",
+                    options: {
+                        A: "النظرية السلوكية الراديكالية لواطسون",
+                        B: "النظرية المعرفية الاجتماعية لألبرت باندورا",
+                        C: "نظرية العوامل الخمسة الكبرى لكوستا وماكراي",
+                        D: "النظرية الإنسانية لكارل روجرز"
+                    },
+                    ans: "B",
+                    exp: "النظرية المعرفية الاجتماعية لألبرت باندورا تؤكد على النمذجة بالملاحظة والكفاءة الذاتية."
+                },
+                {
+                    id: "mcq_7",
+                    q: "٧. أي من الأبعاد التالية للشخصية الرقمية يعكس أسلوب الفرد في استخدام اللغة والرموز التعبيرية (الإيموجي) والصور؟",
+                    options: {
+                        A: "البعد المعرفي",
+                        B: "البعد التواصلي",
+                        C: "البعد الأخلاقي",
+                        D: "البعد الهوياتي"
+                    },
+                    ans: "B",
+                    exp: "البعد التواصلي يعنى باللغة والرموز التعبيرية والأسلوب البصري المستخدم في التفاعل."
+                },
+                {
+                    id: "mcq_8",
+                    q: "٨. الانغلاق داخل ما يُعرف بـ 'الفقاعات الرقمية' (Filter Bubbles) التي تعزز الأفكار المتشابهة يؤدي مباشرة إلى:",
+                    options: {
+                        A: "تغذية التعصب الرقمي ورفض الرأي المخالف",
+                        B: "تنمية التفكير الإبداعي والتسامح الفكري",
+                        C: "تحسين جودة النوم وتقليل أوقات الشاشة",
+                        D: "حماية الخصوصية الرقمية ومنع الاختراقات"
+                    },
+                    ans: "A",
+                    exp: "الفقاعات الرقمية تحجب الرأي الآخر وتعزز التصلب العقائدي والتعصب الرقمي."
+                },
+                {
+                    id: "mcq_9",
+                    q: "٩. يُعرّف بأنه 'العامل المباشر أو المثير الذي يحرك ويثير السلوك في لحظة معينة ويتصف بكونه آنياً وقصير المدى':",
+                    options: {
+                        A: "الحاجة (Need)",
+                        B: "الدافع (Motive)",
+                        C: "الباعث (Incentive / Trigger)",
+                        D: "السمة المركزية (Central Trait)"
+                    },
+                    ans: "C",
+                    exp: "الباعث هو المثير الآني قصير المدى الذي ينشط السلوك في لحظة محددة."
+                },
+                {
+                    id: "mcq_10",
+                    q: "١٠. أي من النماذج التالية صنّف سمات الشخصية إلى ثلاثة أبعاد رئيسية: (الانبساط/الانطواء، العصابية، والذهان)؟",
+                    options: {
+                        A: "هانز أيزنك (Hans Eysenck)",
+                        B: "كارل روجرز (Carl Rogers)",
+                        C: "جون واتسون (John Watson)",
+                        D: "سيغموند فرويد (Sigmund Freud)"
+                    },
+                    ans: "A",
+                    exp: "أيزنك حدد ثلاثة أبعاد أساسية للشخصية هي: الانبساط، العصابية، والذهانية."
+                }
+            ],
+            tf: [
+                {
+                    id: "tf_1",
+                    q: "١١. تأسست أول مجلة متخصصة في علم النفس السيبراني والسلوك والشبكات الاجتماعية في عام 1998م.",
+                    ans: "T",
+                    exp: "صواب: تأسست مجلة Cyberpsychology, Behavior, and Social Networking في عام 1998م."
+                },
+                {
+                    id: "tf_2",
+                    q: "١٢. يقتصر علم النفس السيبراني فقط على دراسة لغات البرمجة وتطوير عتاد الحواسيب دون الاهتمام بالسلوك الإنساني.",
+                    ans: "F",
+                    exp: "خطأ: علم النفس السيبراني يدرس السلوك البشري والتفاعل النفسي والاجتماعي مع البيئات الرقمية."
+                },
+                {
+                    id: "tf_3",
+                    q: "١٣. تُعد تقنيات الواقع الافتراضي (VR) إحدى الأدوات التقنية الحديثة المستخدمة في تقديم بعض العلاجات النفسية.",
+                    ans: "T",
+                    exp: "صواب: الواقع الافتراضي يُستخدم لعلاج المخاوف المرضية واضطرابات القلق والصدمات."
+                },
+                {
+                    id: "tf_4",
+                    q: "١٤. 'الشخصية المزدوجة' في العالم الرقمي تظهر مطابقة تامة ودقيقة لشخصية الفرد في حياته الواقعية دون أي فجوة.",
+                    ans: "F",
+                    exp: "خطأ: الشخصية المزدوجة تظهر صورة مثالية أو مختلفة تماماً عن الذات الحقيقية وتخلق فجوة مع الواقع."
+                },
+                {
+                    id: "tf_5",
+                    q: "١٥. ترى النظرية السلوكية أن الإنسان يولد بصفحة بيضاء، وأن البيئة والتعزيز والعقاب تشكل سلوكه وشخصيته بالكامل.",
+                    ans: "T",
+                    exp: "صواب: السلوكية تعتبر البيئة العامل الحاسم والتعلم بالتعزيز هو أساس تشكل الشخصية."
+                },
+                {
+                    id: "tf_6",
+                    q: "١٦. من أعراض الإدمان الرقمي صعوبة إدارة الوقت، اضطراب نمط النوم، والشعور بالعزلة الاجتماعية.",
+                    ans: "T",
+                    exp: "صواب: هذه من أبرز الأعراض الشائعة للإدمان الرقمي المذكورة بالمقرر."
+                },
+                {
+                    id: "tf_7",
+                    q: "١٧. تعتبر 'الحاجة' قوة ديناميكية متحركة ولحظية، بينما يعتبر 'الدافع' حالة ثابتة نسبياً تعكس النقص فقط.",
+                    ans: "F",
+                    exp: "خطأ: العكس صحيح؛ الحاجة هي حالة النقص الثابتة نسبياً، والدافع هو القوة المحركة الديناميكية."
+                },
+                {
+                    id: "tf_8",
+                    q: "١٨. في هرم ماسلو للاحتياجات، تقع الاحتياجات الفسيولوجية واحتياجات الأمان في قمة الهرم فوق تحقيق الذات.",
+                    ans: "F",
+                    exp: "خطأ: الفسيولوجية والأمان في قاعدة الهرم، وتحقيق الذات في قمته."
+                },
+                {
+                    id: "tf_9",
+                    q: "١٩. تساعد سهولة إخفاء الهوية وغياب الرقابة المباشرة في منصات التواصل على زيادة مظاهر التعصب الرقمي وخطاب الكراهية.",
+                    ans: "T",
+                    exp: "صواب: انعدام الهوية المباشرة يقلل من الضوابط الاجتماعية ويزيد من حدة التعصب."
+                },
+                {
+                    id: "tf_10",
+                    q: "٢٠. يرى كارل روجرز في النظرية الإنسانية أن الفرد يحتاج إلى 'القبول غير المشروط' لينمو نفسياً بصورة سليمة.",
+                    ans: "T",
+                    exp: "صواب: روجرز شدد على القبول غير المشروط والاتساق بين الذات الواقعية والمثالية."
+                }
+            ],
+            essay: [
+                {
+                    id: "essay_1",
+                    q: "٢١. وضح مفهوم 'الشخصية الرقمية'، ثم قارن بين نمطين من أنماطها السلوكية (مثل: الشخصية العلنية والشخصية الخفية) من حيث: الخصائص، طريقة التفاعل، والتحديات النفسية لكل منهما؟",
+                    marks: "3 درجات",
+                    model: [
+                        "مفهوم الشخصية الرقمية (درجة): الطريقة التي يعبر بها الفرد عن نفسه ويتفاعل بها مع الآخرين عبر المنصات الرقمية بما تشمله من سمات وسلوكيات وقيم وهويات قد تماثل أو تختلف عن واقعه.",
+                        "الشخصية العلنية (درجة): محبة للظهور، تنشر التحديثات والصور باستمرار لجذب الانتباه. التحدي النفسي: شدة التأثر بالنقد والمقارنة الاجتماعية السلبية وطلب القبول الدائم.",
+                        "الشخصية الخفية (درجة): تفضل المراقبة الصامتة على الانخراط، تعتمد الخصوصية العالية أو الحسابات المستعارة. التحدي النفسي: العزلة وضعف بناء روابط حقيقية."
+                    ]
+                },
+                {
+                    id: "essay_2",
+                    q: "٢٢. في ضوء دراستك لدوافع السلوك الإنساني، اشرح بالتفصيل الفروق الجوهرية بين المفاهيم الثلاثة التالية: (الحاجة، الدافع، والباعث) مدعماً إجابتك بأمثلة تطبيقية من واقع العالم الرقمي أو المدرسي؟",
+                    marks: "3 درجات",
+                    model: [
+                        "الحاجة (Need) (درجة): حالة نقص أو حرمان بيولوجي أو نفسي (كالحاجة للانتماء أو التقدير)، وهي ثابتة نسبياً وتمثل ما هو أساسي لتوازن الفرد.",
+                        "الدافع (Motive) (درجة): القوة الداخلية النشطة الموجهة للسلوك التي تنشأ استجابة للحاجة لتحقيق غاية معينة (كدافع التفوق أو إثبات الذات)، وهو ديناميكي متحرك.",
+                        "الباعث (Trigger) (درجة): العامل والمثير المباشر اللحظي الذي يحرك السلوك في لحظة معينة (مثل إشعار وصول رسالة أو تنبيه إعجاب)، وهو آني وقصير المدى."
+                    ]
+                },
+                {
+                    id: "essay_3",
+                    q: "٢٣. يُعد 'الإدمان الرقمي' و'التعصب الرقمي' من أخطر الظواهر الناشئة عن استخدام الويب. حلل مسببات هاتين الظاهرتين، مبيناً 4 من الآثار النفسية والاجتماعية المترتبة على الفرد في ضوء ما ورد بالمقرر؟",
+                    marks: "4 درجات",
+                    model: [
+                        "أسباب الظاهرتين (درجتان): خوارزميات المنصات الجاذبة، سهولة الوصول 24/7، التخفي وانعدام الهوية المباشرة، الانغلاق في فقاعات رقمية متشابهة تقصي الرأي الآخر، والبحث عن هوية وانتماء قوي.",
+                        "أربعة آثار سلبية (درجتان - نصف لكل أثر): 1) اضطراب نمط النوم والمشاكل البدنية. 2) العزلة الاجتماعية وضعف التفاعل الواقعي. 3) تقلبات المزاج والقلق والاكتئاب. 4) الوقوع في صراعات رقمية وتبني لغة عدائية ونشر الشائعات."
+                    ]
+                }
+            ]
+        };
+
+        // Current Active Exam State
+        let currentExam = initialExamA;
+        let generatedExamCounter = 1;
+        let totalSeconds = 35 * 60;
+        let timerInterval = null;
+        let previousInputText = ""; // History holder for Undo feature
+
+        const AI_PROMPT_TEMPLATE = `أنت أستاذ جامعي ومصمم اختبارات لمقرر "علم النفس السيبراني".
+المطلوب منك توليد اختبار جديد متكامل بمجموع (30 درجة) وفق الهيكلية التالية:
+- 10 أسئلة اختيار من متعدد (درجة لكل سؤال = 10 درجات).
+- 10 أسئلة صواب وخطأ (درجة لكل سؤال = 10 درجات).
+- 3 أسئلة مقالية تحليلية مع نموذج الإجابة وتوزيع الدرجات (المجموع = 10 درجات).
+
+قم بإخراج النتيجة بصيغة JSON داخل وسم كود، بالبنية التالية تماماً دون أي زيادات:
+
+\`\`\`json
+{
+  "name": "نموذج اختبار جديد (ب)",
+  "mcq": [
+    {
+      "id": "mcq_1",
+      "q": "١. نص السؤال الأول هنا؟",
+      "options": {
+        "A": "الخيار الأول",
+        "B": "الخيار الثاني",
+        "C": "الخيار الثالث",
+        "D": "الخيار الرابع"
+      },
+      "ans": "A",
+      "exp": "تفسير علمي لسبب صحة الإجابة."
+    }
+  ],
+  "tf": [
+    {
+      "id": "tf_1",
+      "q": "١١. نص عبارة الصواب والخطأ هنا.",
+      "ans": "T",
+      "exp": "تفسير علمي يوضح صواب أو خطأ العبارة."
+    }
+  ],
+  "essay": [
+    {
+      "id": "essay_1",
+      "q": "٢١. نص السؤال المقالي التحليلي الأول؟",
+      "marks": "3 درجات",
+      "model": [
+        "النقطة الأولى في نموذج الإجابة (درجة)",
+        "النقطة الثانية في نموذج الإجابة (درجتان)"
+      ]
+    }
+  ]
+}
+\`\`\``;
+
+        // Render Current Exam Object
+        function renderExam(examData) {
+            currentExam = examData;
+
+            // Update badge
+            document.getElementById('formVersionBadge').textContent = examData.name || `النموذج الحالي`;
+
+            // Render MCQ
+            const mcqContainer = document.getElementById('mcqContainer');
+            mcqContainer.innerHTML = examData.mcq.slice(0, 10).map((item, idx) => `
+                <div class="question-card p-4 rounded-2xl border border-slate-200 bg-slate-50/60" data-qid="${item.id}" data-type="mcq">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="font-bold text-slate-800 text-base">${item.q}</span>
+                        <span class="text-xs font-semibold text-slate-400 bg-white px-2 py-0.5 rounded border border-slate-200">1 درجة</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        ${Object.entries(item.options).map(([optKey, optVal]) => `
+                            <div>
+                                <input type="radio" id="${item.id}_${optKey}" name="${item.id}" value="${optKey}" class="hidden custom-radio">
+                                <label for="${item.id}_${optKey}" class="flex items-center gap-2 p-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 cursor-pointer text-sm font-medium transition duration-150">
+                                    <span class="w-6 h-6 rounded-lg bg-slate-100 text-slate-600 font-bold flex items-center justify-center text-xs">${optKey === 'A' ? 'أ' : optKey === 'B' ? 'ب' : optKey === 'C' ? 'ج' : 'د'}</span>
+                                    <span>${optVal}</span>
+                                </label>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="feedback-msg mt-3 text-xs font-bold hidden p-2 rounded-lg"></div>
+                </div>
+            `).join('');
+
+            // Render True/False
+            const tfContainer = document.getElementById('tfContainer');
+            tfContainer.innerHTML = examData.tf.slice(0, 10).map((item, idx) => `
+                <div class="question-card p-4 rounded-2xl border border-slate-200 bg-slate-50/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4" data-qid="${item.id}" data-type="tf">
+                    <div class="text-sm md:text-base font-bold text-slate-800 flex-1">
+                        ${item.q}
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <input type="radio" id="${item.id}_t" name="${item.id}" value="T" class="hidden custom-radio">
+                        <label for="${item.id}_t" class="px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 cursor-pointer text-xs font-bold transition">صواب <i class="fa-solid fa-check text-emerald-600 mr-1"></i></label>
+                        
+                        <input type="radio" id="${item.id}_f" name="${item.id}" value="F" class="hidden custom-radio">
+                        <label for="${item.id}_f" class="px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 cursor-pointer text-xs font-bold transition">خطأ <i class="fa-solid fa-xmark text-rose-600 mr-1"></i></label>
+                    </div>
+                    <div class="feedback-msg w-full mt-2 text-xs font-bold hidden p-2 rounded-lg"></div>
+                </div>
+            `).join('');
+
+            // Render Essay
+            const essayContainer = document.getElementById('essayContainer');
+            essayContainer.innerHTML = examData.essay.slice(0, 3).map((item, idx) => `
+                <div class="question-card p-5 rounded-2xl border border-slate-200 bg-slate-50/60" id="card_${item.id}">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-slate-800 text-base leading-relaxed">
+                            ${item.q}
+                        </h3>
+                        <span class="text-xs font-extrabold text-purple-700 bg-purple-100 px-2.5 py-1 rounded-lg border border-purple-200 shrink-0 mr-2">${item.marks || 'درجات'}</span>
+                    </div>
+                    <textarea id="${item.id}" rows="4" placeholder="اكتب إجابتك التحليلية الوافية هنا..." class="w-full p-3.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm bg-white leading-relaxed"></textarea>
+                    
+                    <!-- Model Answer Box -->
+                    <div id="modelAns_${idx + 1}" class="hidden mt-3 p-4 bg-purple-50/80 border border-purple-200 rounded-xl text-xs leading-relaxed text-slate-800">
+                        <span class="font-bold text-purple-900 block mb-1.5 text-sm"><i class="fa-solid fa-lightbulb ml-1"></i> نموذج الإجابة ومعايير التقييم:</span>
+                        <ul class="list-disc list-inside space-y-1 text-slate-700">
+                            ${Array.isArray(item.model) ? item.model.map(m => `<li>${m}</li>`).join('') : `<li>${item.model}</li>`}
+                        </ul>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Timer Logic
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    autoSubmitOnTimeUp();
+                    return;
+                }
+                totalSeconds--;
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+                document.getElementById('timerText').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function autoSubmitOnTimeUp() {
+            showNotification("انتهى وقت الاختبار المحدد! جاري تسليم إجاباتك تلقائياً...", "warning");
+            const fakeEvent = { preventDefault: () => {} };
+            submitExam(fakeEvent);
+        }
+
+        function showNotification(msg, type = "info") {
+            const alertBox = document.getElementById('statusAlert');
+            alertBox.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'border-emerald-300', 'bg-rose-100', 'text-rose-800', 'border-rose-300', 'bg-amber-100', 'text-amber-800', 'border-amber-300', 'bg-indigo-100', 'text-indigo-800', 'border-indigo-300');
+            
+            if (type === "success") {
+                alertBox.classList.add('bg-emerald-100', 'text-emerald-800', 'border', 'border-emerald-300');
+            } else if (type === "error") {
+                alertBox.classList.add('bg-rose-100', 'text-rose-800', 'border', 'border-rose-300');
+            } else if (type === "ai") {
+                alertBox.classList.add('bg-indigo-100', 'text-indigo-800', 'border', 'border-indigo-300');
+            } else {
+                alertBox.classList.add('bg-amber-100', 'text-amber-800', 'border', 'border-amber-300');
+            }
+            alertBox.innerHTML = `<i class="fa-solid fa-circle-exclamation ml-1"></i> ${msg}`;
+            alertBox.classList.remove('hidden');
+        }
+
+        // Exam Evaluation
+        function submitExam(e) {
+            e.preventDefault();
+
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentId = document.getElementById('studentId').value.trim();
+
+            if (!studentName) {
+                showNotification("يرجى إدخال اسم الطالب الثلاثي قبل تسليم الاختبار.", "error");
+                document.getElementById('studentName').focus();
+                return;
+            }
+
+            const activeExam = currentExam;
+            let calculatedObjectiveScore = 0;
+
+            // Grade MCQ
+            activeExam.mcq.slice(0, 10).forEach(item => {
+                const selected = document.querySelector(`input[name="${item.id}"]:checked`);
+                const card = document.querySelector(`[data-qid="${item.id}"]`);
+                if (!card) return;
+                const feedbackBox = card.querySelector('.feedback-msg');
+
+                card.classList.remove('border-emerald-500', 'border-rose-500', 'bg-emerald-50/40', 'bg-rose-50/40');
+                feedbackBox.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'bg-rose-100', 'text-rose-800');
+
+                if (selected && selected.value.toUpperCase() === item.ans.toUpperCase()) {
+                    calculatedObjectiveScore += 1;
+                    card.classList.add('border-emerald-500', 'bg-emerald-50/40');
+                    feedbackBox.classList.add('bg-emerald-100', 'text-emerald-800');
+                    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-check ml-1"></i> إجابة صحيحة! (${item.ans}) • ${item.exp}`;
+                } else {
+                    card.classList.add('border-rose-500', 'bg-rose-50/40');
+                    feedbackBox.classList.add('bg-rose-100', 'text-rose-800');
+                    const studentAnsText = selected ? `إجابتك: ${selected.value}` : `لم تجب`;
+                    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-xmark ml-1"></i> ${studentAnsText} — الإجابة الصحيحة هي: (${item.ans}) • ${item.exp}`;
+                }
+                feedbackBox.classList.remove('hidden');
+            });
+
+            // Grade True / False
+            activeExam.tf.slice(0, 10).forEach(item => {
+                const selected = document.querySelector(`input[name="${item.id}"]:checked`);
+                const card = document.querySelector(`[data-qid="${item.id}"]`);
+                if (!card) return;
+                const feedbackBox = card.querySelector('.feedback-msg');
+
+                card.classList.remove('border-emerald-500', 'border-rose-500', 'bg-emerald-50/40', 'bg-rose-50/40');
+                feedbackBox.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'bg-rose-100', 'text-rose-800');
+
+                const isAnswerTrue = item.ans.toUpperCase() === 'T';
+                const correctText = isAnswerTrue ? 'صواب' : 'خطأ';
+                if (selected && selected.value.toUpperCase() === item.ans.toUpperCase()) {
+                    calculatedObjectiveScore += 1;
+                    card.classList.add('border-emerald-500', 'bg-emerald-50/40');
+                    feedbackBox.classList.add('bg-emerald-100', 'text-emerald-800');
+                    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-check ml-1"></i> إجابة صحيحة (${correctText}) • ${item.exp}`;
+                } else {
+                    card.classList.add('border-rose-500', 'bg-rose-50/40');
+                    feedbackBox.classList.add('bg-rose-100', 'text-rose-800');
+                    const studentAnsText = selected ? (selected.value.toUpperCase() === 'T' ? 'صواب' : 'خطأ') : 'لم تجب';
+                    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-xmark ml-1"></i> إجابتك: ${studentAnsText} — الإجابة الصحيحة: (${correctText}) • ${item.exp}`;
+                }
+                feedbackBox.classList.remove('hidden');
+            });
+
+            // Stop Timer
+            clearInterval(timerInterval);
+
+            // Reveal Essay Model Answers
+            document.querySelectorAll('[id^="modelAns_"]').forEach(el => el.classList.remove('hidden'));
+
+            // Show Results
+            const resultsSection = document.getElementById('resultsSection');
+            resultsSection.classList.remove('hidden');
+
+            document.getElementById('studentGreeting').textContent = `الطالب / الطالبة: ${studentName} ${studentId ? `(${studentId})` : ''} - [${activeExam.name}] تم الرصد.`;
+            document.getElementById('objScore').textContent = `${calculatedObjectiveScore} / 20`;
+            document.getElementById('totalPreliminary').textContent = `${calculatedObjectiveScore} / 30`;
+
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+            showNotification(`تم رصد درجات الأسئلة الموضوعية: حققت ${calculatedObjectiveScore} من 20 درجة. نماذج إجابة الأسئلة المقالية أصبحت متاحة بالأسفل للمطابقة.`, "success");
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            submitBtn.innerHTML = `<i class="fa-solid fa-check-double"></i> تم التسليم والتصحيح بنجاح`;
+        }
+
+        // Modal Handlers (Replacing confirm())
+        function openResetModal() {
+            document.getElementById('resetModal').classList.remove('hidden');
+        }
+
+        function closeResetModal() {
+            document.getElementById('resetModal').classList.add('hidden');
+        }
+
+        function confirmReset() {
+            closeResetModal();
+            resetExamForm();
+            showNotification("تمت إعادة تعيين نموذج الاختبار الحالي بنجاح.", "info");
+        }
+
+        function resetExamForm() {
+            document.getElementById('quizForm').reset();
+            document.querySelectorAll('.feedback-msg').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('[id^="modelAns_"]').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.question-card').forEach(card => {
+                card.classList.remove('border-emerald-500', 'border-rose-500', 'bg-emerald-50/40', 'bg-rose-50/40');
+            });
+            document.getElementById('resultsSection').classList.add('hidden');
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> <span>تسليم الاختبار وتصحيح الدرجة</span>`;
+
+            totalSeconds = 35 * 60;
+            startTimer();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Import Modal Handlers
+        function openImportModal() {
+            document.getElementById('importModal').classList.remove('hidden');
+        }
+
+        function closeImportModal() {
+            document.getElementById('importModal').classList.add('hidden');
+        }
+
+        function openPromptModal() {
+            document.getElementById('promptTextHolder').value = AI_PROMPT_TEMPLATE;
+            document.getElementById('promptModal').classList.remove('hidden');
+        }
+
+        function closePromptModal() {
+            document.getElementById('promptModal').classList.add('hidden');
+            document.getElementById('copySuccessMsg').classList.add('opacity-0');
+        }
+
+        // Fullscreen Toggle
+        function toggleFullScreen() {
+            const icon = document.getElementById('fullscreenIcon');
+            const label = document.getElementById('fullscreenText');
+
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().then(() => {
+                    icon.classList.remove('fa-expand');
+                    icon.classList.add('fa-compress');
+                    if (label) label.textContent = "تصغير";
+                }).catch(err => {
+                    showNotification("تعذر تفعيل ملء الشاشة: " + err.message, "error");
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen().then(() => {
+                        icon.classList.remove('fa-compress');
+                        icon.classList.add('fa-expand');
+                        if (label) label.textContent = "ملء الشاشة";
+                    });
+                }
+            }
+        }
+
+        // Sync Fullscreen state on Esc key or system change
+        document.addEventListener('fullscreenchange', () => {
+            const icon = document.getElementById('fullscreenIcon');
+            const label = document.getElementById('fullscreenText');
+            if (icon && label) {
+                if (document.fullscreenElement) {
+                    icon.classList.remove('fa-expand');
+                    icon.classList.add('fa-compress');
+                    label.textContent = "تصغير";
+                } else {
+                    icon.classList.remove('fa-compress');
+                    icon.classList.add('fa-expand');
+                    label.textContent = "ملء الشاشة";
+                }
+            }
+        });
+
+        // Clear & Undo Logic for Import Modal
+        function clearQuizInput() {
+            const inputArea = document.getElementById('rawQuizInput');
+            const undoBtn = document.getElementById('undoBtn');
+            const currentVal = inputArea.value;
+
+            if (currentVal.trim() !== "") {
+                previousInputText = currentVal;
+                inputArea.value = "";
+                undoBtn.disabled = false;
+                undoBtn.classList.remove('text-slate-400');
+                undoBtn.classList.add('text-slate-700');
+                showNotification("تم مسح الكود، يمكنك التراجع عبر زر 'تراجع'.", "info");
+            }
+        }
+
+        function undoTextClear() {
+            const inputArea = document.getElementById('rawQuizInput');
+            const undoBtn = document.getElementById('undoBtn');
+
+            if (previousInputText) {
+                inputArea.value = previousInputText;
+                previousInputText = "";
+                undoBtn.disabled = true;
+                undoBtn.classList.add('text-slate-400');
+                undoBtn.classList.remove('text-slate-700');
+                showNotification("تم استرجاع الكود المحذوف بنجاح.", "success");
+            }
+        }
+
+        function copyPromptToClipboard() {
+            const promptArea = document.getElementById('promptTextHolder');
+            promptArea.select();
+            promptArea.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+            
+            const msg = document.getElementById('copySuccessMsg');
+            msg.classList.remove('opacity-0');
+            setTimeout(() => {
+                msg.classList.add('opacity-0');
+            }, 2500);
+        }
+
+        function loadSampleTemplate() {
+            const sampleJson = {
+                name: "نموذج تجريبي منسوخ (ب)",
+                mcq: [
+                    { id: "mcq_1", q: "١. يركز علم النفس السيبراني على دراسة:", options: { A: "السلوك البشري في البيئات الرقمية", B: "صناعة رقاقات المعالجة", C: "تصميم دوائر الكهرباء", D: "علم الفلك والمجرات" }, ans: "A", exp: "يهتم بدراسة التفاعل الإنساني مع المنصات الرقمية." },
+                    { id: "mcq_2", q: "٢. الأنا الأعلى في نظرية فرويد يمثل:", options: { A: "الضمير والمعايير الأخلاقية", B: "الغرائز الحيوانية", C: "الجزء العضلي", D: "اللاوعي المادي" }, ans: "A", exp: "يمثل الضمير والمثل الأخلاقية العليا." },
+                    { id: "mcq_3", q: "٣. الانطواء والانبساط من أبعاد نظرية:", options: { A: "أيزنك ويونغ", B: "واطسون وحده", C: "سكنر", D: "روجرز" }, ans: "A", exp: "صنف يونغ وأيزنك الشخصية وفق بعدي الانبساط والانطواء." },
+                    { id: "mcq_4", q: "٤. الشخصية التفاعلية الرقمية تتسم بـ:", options: { A: "بناء شبكات اجتماعية نشطة", B: "العزلة التامة", C: "استخدام أسماء وهمية دائماً", D: "رفض المحادثات" }, ans: "A", exp: "نشطة للغاية في الردود والمحادثات." },
+                    { id: "mcq_5", q: "٥. تظهر أعراض الإدمان الرقمي في:", options: { A: "اضطراب النوم وصعوبة إدارة الوقت", B: "زيادة التركيز والقراءة", C: "تقليل استخدام الهاتف", D: "الاستقرار التام" }, ans: "A", exp: "من أهم أعراضه تدهور جودة النوم وإدارة الوقت." },
+                    { id: "mcq_6", q: "٦. الباعث يتميز عن الدافع بكونه:", options: { A: "آنياً ولحظياً وقصير المدى", B: "حالة نقص دائم", C: "وراثياً خالصاً", D: "طويل الأمد" }, ans: "A", exp: "الباعث مثير آني ومباشر." },
+                    { id: "mcq_7", q: "٧. مؤسس نظرية الذات والقبول غير المشروط هو:", options: { A: "كارل روجرز", B: "سيغموند فرويد", C: "باندورا", D: "واطسون" }, ans: "A", exp: "كارل روجرز في الاتجاه الإنساني." },
+                    { id: "mcq_8", q: "٨. من مظاهر التعصب الرقمي:", options: { A: "استخدام لغة عدائية ونشر الشائعات", B: "احترام الرأي المخالف", C: "الحيادية والموضوعية", D: "مساعدة الآخرين" }, ans: "A", exp: "التعصب يتضمن الإقصاء والعدائية." },
+                    { id: "mcq_9", q: "٩. الحاجة بحسب تعريفها تمثل:", options: { A: "حالة من النقص أو الحرمان", B: "مثير لحظي", C: "سلوك ظاهري فوري", D: "رد فعل شرطي" }, ans: "A", exp: "الحاجة هي حالة النقص أو الحرمان." },
+                    { id: "mcq_10", q: "١٠. الكفاءة الذاتية من مفاهيم نظرية:", options: { A: "ألبرت باندورا", B: "فرويد", C: "سكنر", D: "ألبورت" }, ans: "A", exp: "باندورا في نظريته المعرفية الاجتماعية." }
+                ],
+                tf: [
+                    { id: "tf_1", q: "١١. نشأ علم النفس السيبراني في مطلع التسعينيات.", ans: "T", exp: "صواب: ارتبط بانتشار الإنترنت في التسعينيات." },
+                    { id: "tf_2", q: "١٢. لا توجد أي علاقة بين استخدام الواقع الافتراضي والعلاج النفسي.", ans: "F", exp: "خطأ: يستخدم في علاج الفوبيا والقلق." },
+                    { id: "tf_3", q: "١٣. الشخصية الخفية تفضل المراقبة على المشاركة المباشرة.", ans: "T", exp: "صواب: تتسم بمتابعة بصمت وخصوصية." },
+                    { id: "tf_4", q: "١٤. الهو (Id) يعمل وفق مبدأ الواقع والتأجيل.", ans: "F", exp: "خطأ: الهو يبحث عن الإشباع اللحظي." },
+                    { id: "tf_5", q: "١٥. الفقاعات الرقمية تحد من التعصب وتزيد من تقبل الرأي الآخر.", ans: "F", exp: "خطأ: تعزز التصلب الفكري والتعصب." },
+                    { id: "tf_6", q: "١٦. الدافع قوة ديناميكية تنشأ لإشباع الحاجة.", ans: "T", exp: "صواب: يوجه السلوك نحو الهدف." },
+                    { id: "tf_7", q: "١٧. الإدمان على ألعاب الفيديو يعد نوعاً من الإدمان الرقمي.", ans: "T", exp: "صواب: مصنف كأحد أنماط الإدمان التقني." },
+                    { id: "tf_8", q: "١٨. تفترض النظرية السلوكية أن الإنسان يولد محكوماً بغرائزه اللاواعية فقط.", ans: "F", exp: "خطأ: تلك نظرية التحليل النفسي." },
+                    { id: "tf_9", q: "١٩. البعد التواصلي يشمل استخدام الرموز والإيموجي.", ans: "T", exp: "صواب: البعد التواصلي يعنى بطريقة التعبير." },
+                    { id: "tf_10", q: "٢٠. القبول غير المشروط شرط للنمو النفسي السليم عند روجرز.", ans: "T", exp: "صواب: ركيزة أساسية بنظرية الذات." }
+                ],
+                essay: [
+                    { id: "essay_1", q: "٢١. قارن بين الشخصية العلنية والشخصية المزدوجة من حيث الظهور والدافع النفسي؟", marks: "3 درجات", model: ["الشخصية العلنية: حب الظهور والمشاركة وجذب الاهتمام والتقدير.", "الشخصية المزدوجة: الفصل بين الذات الحقيقية وصورة مثالية افتراضية."] },
+                    { id: "essay_2", q: "٢٢. بين بالرسم أو التوضيح الفارق العملي بين الحاجة والدافع والباعث؟", marks: "3 درجات", model: ["الحاجة: حالة نقص داخلي.", "الدافع: طاقة موجهة للتعويض.", "الباعث: منبه خارجي لحظي."] },
+                    { id: "essay_3", q: "٢٣. اقترح 3 حلول نفسية للحد من التعصب الرقمي في وسائل التواصل؟", marks: "4 درجات", model: ["1) تنمية التفكير النقدي والتحقق.", "2) كسر الفقاعات الرقمية بمتابعة وجهات نظر متعددة.", "3) التوعية بمخاطر خطاب الكراهية وضبط الانفعالات."] }
+                ]
+            };
+            document.getElementById('rawQuizInput').value = JSON.stringify(sampleJson, null, 2);
+        }
+
+        function extractJsonFromString(str) {
+            // Clean markdown blocks if present
+            const cleaned = str.replace(/```json/gi, '').replace(/```/g, '').trim();
+            const firstBrace = cleaned.indexOf('{');
+            const lastBrace = cleaned.lastIndexOf('}');
+            if (firstBrace !== -1 && lastBrace !== -1) {
+                return JSON.parse(cleaned.substring(firstBrace, lastBrace + 1));
+            }
+            return JSON.parse(cleaned);
+        }
+
+        function applyImportedQuiz() {
+            const rawText = document.getElementById('rawQuizInput').value.trim();
+            if (!rawText) {
+                showNotification("يرجى لصق نص الاختبار أولاً في الحقل المخصص.", "error");
+                return;
+            }
+
+            try {
+                const parsed = extractJsonFromString(rawText);
+
+                // Validation
+                if (!parsed.mcq || !Array.isArray(parsed.mcq) || parsed.mcq.length < 1) {
+                    throw new Error("تنسيق الأسئلة غير صحيح: قسم mcq غير موجود أو غير مكتمل.");
+                }
+                if (!parsed.tf || !Array.isArray(parsed.tf) || parsed.tf.length < 1) {
+                    throw new Error("تنسيق الأسئلة غير صحيح: قسم tf غير موجود أو غير مكتمل.");
+                }
+                if (!parsed.essay || !Array.isArray(parsed.essay) || parsed.essay.length < 1) {
+                    throw new Error("تنسيق الأسئلة غير صحيح: قسم essay غير موجود أو غير مكتمل.");
+                }
+
+                // Render imported quiz
+                renderExam(parsed);
+                closeImportModal();
+                resetExamForm();
+
+                showNotification(`تم بنجاح استيراد وعرض [${parsed.name || 'الاختبار الجديد'}] وهو جاهز للحل الآن!`, "success");
+            } catch (err) {
+                showNotification(`خطأ في معالجة النص: ${err.message}. تأكد من استخدام البرومبت المعتمد.`, "error");
+            }
+        }
+
+        // Initialize on window load
+        window.onload = function() {
+            renderExam(initialExamA);
+            startTimer();
+        };
+    </script>
+</body>
+</html>
